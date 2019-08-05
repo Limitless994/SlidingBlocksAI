@@ -1,0 +1,6 @@
+canMoveDown(ID):-cell(X,Y,ID,_),empty(X1,Y),X1=X+1.
+canMoveUP(ID):-cell(X,Y,ID,_),empty(X1,Y),X1=X-1.
+canMoveLeft(ID):-cell(X,Y1,ID,_),empty(X,Y),Y1=Y+1.
+canMoveRight(ID):-cell(X,Y1,ID,_),empty(X,Y),Y1=Y-1.
+inRightPlace(ID):-cell(_,_,ID,N),ID=N+1.
+:~cell(_,_,ID,_),not inRightPlace(ID).[1:3]
