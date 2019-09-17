@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.function.Predicate;
@@ -41,6 +42,8 @@ import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
 import it.unical.mat.embasp.specializations.dlv.Cell;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
+import logica.Cella;
+
 
 
 public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pannello dedicato
@@ -75,19 +78,19 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	private int gridSize;
 
 	private boolean gameOver; //Vero se il gioco finisce, falso altrimenti
-	
-	
+
+
 	public String encoding = " "; //qua va impostata la lettura del file : Sliding-Blocks-Rules
 	public String instance= " ";	//qua vanno inserite le celle ( cioè i fatti ) dopo che è stato fatto lo shuffle, NB non dimenticare di aggiornare questo file ogni volta che si esegue un movimento delle celle. Vedi funzione setInstance
 	private static String encodingResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
 	private static String instanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
-	private static Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));;
-	
-	
+	private static Handler handler;  
+
 	private int coordinataXMouse;
 	private int coordinataYMouse;
 	
-	
+	ArrayList<Cella> listaCelle;
+
 	public SlidingBlocks (int size, int dim, int mar) {
 		this.size = size;
 		dimension = dim;
@@ -108,8 +111,8 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	}
 
 
-	
-	
+
+
 	//Aggiungi un moise che al click chiama risolviazione e ricolora il pannello
 	private void addMouse() {
 		addMouseListener(new MouseAdapter() {
@@ -127,14 +130,16 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				}
 				//Ricolorazione panel
 				repaint();
-				//				setInstance();
-				//				initDlv();
+						
+				initDlv();
+				setInstance();  
+//				muoviCellaDlv();
+				
+				
 				//System.out.println(instance);
 
 			}
-
 		});
-
 	}
 
 
@@ -185,13 +190,17 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		}
 		while(!isSolvable()); //Fa fino a quando la griglia Ã¨ risolvibile
 		gameOver=false;
+		//		
+		initDlv();
+		
 		setInstance();
-		//		initDlv();
+//		muoviCellaDlv();
 	}
 
 	private void reset() {
 		for(int i= 0; i<tiles.length;i++) {
 			tiles[i] = (i+1) % tiles.length;
+			
 		}
 		//mettiamo la cella bianca ultima
 		blankPos = tiles.length -1;
@@ -214,103 +223,125 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 		}
 	}
-
-	//	private void initDlv() {
-	//	 handler=new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
-	//	 InputProgram  program = new ASPInputProgram();
-	//	 program.addFilesPath(encodingResource);
-	//		program.addFilesPath(instanceResource);
-	//		handler.addProgram(program);
-	//		// register the class for reflection
-	//				try {
-	//					ASPMapper.getInstance().registerClass(Cell.class);
-	//					
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//				}
-	//				
-	//				Output o =  handler.startSync();
-	//				
-	//				AnswerSets answers = (AnswerSets) o;
-	//				
-	//				int n=0;
-	//				for(AnswerSet a:answers.getAnswersets()){
-	//					// System.out.println("AS n.: " + ++n + ": " + a);
-	//					try {
-	//
-	//						for(Object obj:a.getAtoms()){
-	//							if(obj instanceof Cell)  {
-	//								Cell cella = (Cell) obj;
-	//								System.out.print(cella + " ");
-	//							}
-	//						}
-	//						System.out.println();
-	//					} catch (Exception e) {
-	//						e.printStackTrace();
-	//					} 			
-	//				}
-	//	 
-	//	}
-	private void setInstance() {
-		int s=0;
-		instance="";
-		for(int i= 1; i<=size;i++) {
-			for(int j= 1; j<=size;j++) {
-				if(tiles[s]==0) instance=(instance + new String("empty("+i+","+j+").\n"));
-				else instance=(instance + new String("cell("+i+","+j+","+tiles[s]+","+ s +").\n"));
-				s++;
-			}
-		}
-		Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
-
-		try {
-			Files.write(path, instance.getBytes());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		InputProgram  program = new ASPInputProgram();
-		//			program.addProgram(encoding);
-		//			program.addProgram(instance);
-		program.addFilesPath(encodingResource);
-		program.addFilesPath(instanceResource);
-		handler.addProgram(program);
+	
+	public void initDlv() {
+	Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
 
 		// register the class for reflection
 		try {
-			ASPMapper.getInstance().registerClass(SLD.class);
-
+			ASPMapper.getInstance().registerClass(Cella.class);
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		Output o =  handler.startSync();
+	}
 
-		AnswerSets answers = (AnswerSets) o;
-
-		int n=0;
-		for(AnswerSet a:answers.getAnswersets()){
-			//if(a.toString()=="canMove")
-			//System.out.println("AS n.: " + ++n + ": " + a);
-			String s2 = a.toString();
-			StringTokenizer st = new StringTokenizer(s2);
-			while (st.hasMoreTokens()) {
-				if(st.nextToken().contains("canMoveDown")) {	
-					System.out.println("Muovi giù");
-				}else if(st.toString().contains("canMoveRight")){
-					System.out.println("Muovi R");
-
-				}else if(st.toString().contains("canMoveUP")){
-					System.out.println("Muovi UP");
-
-				}else if(st.toString().contains("canMoveLeft")){
-					System.out.println("Muovi L");
-
+//	private void muoviCellaDlv() {
+//		handler.removeAll();
+//		
+//		InputProgram  facts = new ASPInputProgram();
+//		
+//		for(Cella cell: listaCelle) {
+//			try {
+//				facts.addObjectInput(cell);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		handler.addProgram(facts);
+//		facts.toString();
+//		
+//		InputProgram encode = new ASPInputProgram();
+//		encode.addFilesPath(encodingResource);
+//		encode.addFilesPath(instanceResource);
+//		handler.addProgram(encode);
+//		
+//		Output o =  handler.startSync();
+//		AnswerSets answers = (AnswerSets) o;
+//		// register the class for reflection	
+//		
+//		for(AnswerSet a : answers.getAnswersets()){
+//			// System.out.println("AS n.: " + ++n + ": " + a);
+//			try {
+//				for(Object obj:a.getAtoms()){
+//					if(obj instanceof Cella)  {
+//						Cella cella = (Cella) obj;
+//						System.out.print(cella + " ");
+//					}
+//				}
+//				System.out.println();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			} 			
+//		}
+//
+//	}
+		
+		private void setInstance() {
+			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+			int s=0;
+			instance="";
+			for(int i= 1; i<=size;i++) {
+				for(int j= 1; j<=size;j++) {
+					if(tiles[s]==0) instance=(instance + new String("empty("+i+","+j+").\n"));
+					else instance=(instance + new String("cell("+i+","+j+","+tiles[s]+","+ s +").\n"));
+					s++;
 				}
 			}
-
+			Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
+	
+			try {
+				Files.write(path, instance.getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			InputProgram  program = new ASPInputProgram();
+			//			program.addProgram(encoding);
+			//			program.addProgram(instance);
+			program.addFilesPath(encodingResource);
+			program.addFilesPath(instanceResource);
+			handler.addProgram(program);
+	
+			// register the class for reflection
+			try {
+				ASPMapper.getInstance().registerClass(SLD.class);
+	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+			Output o =  handler.startSync();
+	
+			AnswerSets answers = (AnswerSets) o;
+	
+			int n=0;
+			
+			for(AnswerSet a:answers.getAnswersets()){
+				//if(a.toString()=="canMove")
+				//System.out.println("AS n.: " + ++n + ": " + a);
+				String s2 = a.toString();
+				StringTokenizer st = new StringTokenizer(s2);
+				System.out.println("Nuovi Answer");
+				while (st.hasMoreTokens()) {
+					String temp=st.nextToken();
+					if(temp.contains("canMoveDown")) {
+						System.out.println("Giù: " + temp );
+					}else if(temp.contains("canMoveRight")){
+						System.out.println("Destra: " + temp );
+	
+					}else if(temp.toString().contains("canMoveUP")){
+						System.out.println("Sopra: " + temp );
+	
+					}else if(temp.toString().contains("canMoveLeft")){
+						System.out.println("Sinistra: " + temp );
+	
+					}
+				}
+	
+			}
 		}
-	}
 
 
 

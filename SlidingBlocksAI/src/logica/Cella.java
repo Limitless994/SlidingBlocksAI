@@ -3,8 +3,8 @@ package logica;
 import it.unical.mat.embasp.languages.Id;
 import it.unical.mat.embasp.languages.Param;
 
-@Id("cell")
-public class Cell {
+@Id("Cella")
+public class Cella {
 	@Param(0)
 	int riga;
 	
@@ -13,13 +13,10 @@ public class Cell {
 
 	@Param(2)
 	int value;
-	
-//	@Param(3)
-//	int gipf;
 
-	public Cell() {}
+	public Cella() {}
 	
-	public Cell(int riga, int colonna, int value) {
+	public Cella(int riga, int colonna, int value) {
 		this.riga = riga;
 		this.colonna = colonna;
 		this.value = value;
@@ -51,7 +48,7 @@ public class Cell {
 
 	@Override
 	public String toString() {
-		return "Cell [riga=" + riga + ", colonna=" + colonna + ", value=" + value + "]";
+		return "Cella [riga=" + riga + ", colonna=" + colonna + ", valore=" + value + "]";
 	}
 	
 	
