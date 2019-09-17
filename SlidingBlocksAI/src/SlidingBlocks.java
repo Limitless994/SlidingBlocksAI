@@ -75,15 +75,19 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	private int gridSize;
 
 	private boolean gameOver; //Vero se il gioco finisce, falso altrimenti
-
+	
+	
 	public String encoding = " "; //qua va impostata la lettura del file : Sliding-Blocks-Rules
-
 	public String instance= " ";	//qua vanno inserite le celle ( cioè i fatti ) dopo che è stato fatto lo shuffle, NB non dimenticare di aggiornare questo file ogni volta che si esegue un movimento delle celle. Vedi funzione setInstance
-
 	private static String encodingResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
 	private static String instanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
-	private static Handler handler;
-
+	private static Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));;
+	
+	
+	private int coordinataXMouse;
+	private int coordinataYMouse;
+	
+	
 	public SlidingBlocks (int size, int dim, int mar) {
 		this.size = size;
 		dimension = dim;
@@ -97,70 +101,80 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		gridSize = (dim-2*margin);
 		tileSize = gridSize/ size;
 
-		setPreferredSize(new Dimension(dimension, dimension +margin));
-		setBackground(Color.WHITE);
-		setForeground(FOREGROUND_COLOR);
-		setFont(new Font("TimesRoman" ,Font.BOLD, 60));
+		setGameFrame();
 		gameOver = true;
+		addMouse();
+		newGame();
+	}
 
+
+	
+	
+	//Aggiungi un moise che al click chiama risolviazione e ricolora il pannello
+	private void addMouse() {
 		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent mousePos) {
 				//listener per interagire con il mouse sulla griglia
+
 				if(gameOver) {
 					newGame();
 
 				}else {
-					int ex= e.getX() - margin;
-					int ey= e.getY() -margin;
-
-					//Clic sulla griglia
-					if(ex<0 || ex>gridSize || ey<0 || ey> gridSize)
-						return;
-
-					//Ottieni posizione sulla griglia
-					int c1 = ex/ tileSize;
-					int r1 = ey/ tileSize; 
-
-					// Ottieni posizione della cella bianca
-					int c2 = blankPos% size;
-					int r2 = blankPos /size;
-
-					//Conversione in coordinate 1D
-					int clickPos = r1*size+c1;
-
-					int dir =0;
-
-					//Ricerca della direzione per il movimento multiplo dei tile uno alla volta
-					if(c1 ==c2 && Math.abs(r1-r2)>0)
-						dir = (r1-r2)>0 ? size: -size;
-						else if(r1 == r2 && Math.abs(c1-c2)>0)
-							dir = (c1-c2) >0 ? 1: -1;
-
-							if(dir!=0) {
-								//Muovi i tiles in quella direzione
-								do {
-									int newBlankPos = blankPos+dir;
-									tiles[blankPos] = tiles[newBlankPos];
-									blankPos= newBlankPos;
-								}while(blankPos!=clickPos);
-								tiles[blankPos] =0;
-							}
-
-							//Check per controllare che il gioco sia finito
-							gameOver= isSolved();
+					coordinataXMouse= mousePos.getX();
+					coordinataYMouse= mousePos.getY();
+					resolveAction();
 				}
-
 				//Ricolorazione panel
 				repaint();
-				setInstance();
-//				initDlv();
+				//				setInstance();
+				//				initDlv();
 				//System.out.println(instance);
 
 			}
 
 		});
-		newGame();
+
+	}
+
+
+	//metodo contenente la logica del gioco
+	private void resolveAction() {
+		int coordinataX= coordinataXMouse - margin;
+		int coordinataY= coordinataYMouse -margin;
+		//Clic sulla griglia da scartare
+		if(coordinataX<0 || coordinataX>gridSize || coordinataY<0 || coordinataY> gridSize)
+			return;
+
+		//Ottieni posizione sulla griglia
+		int colonnaBloccoGriglia = coordinataX/ tileSize;
+		int rigaBloccoGriglia = coordinataY/ tileSize; 
+		// Ottieni posizione della cella bianca
+		int colonnaCellaBianca = blankPos% size;
+		int rigaCellaBianca = blankPos /size;
+		//Conversione in coordinate 1D
+		int clickPos = rigaBloccoGriglia*size+colonnaBloccoGriglia;
+
+		int dir =0;
+
+		//Ricerca della direzione per il movimento multiplo dei tile uno alla volta
+		if(colonnaBloccoGriglia ==colonnaCellaBianca && Math.abs(rigaBloccoGriglia-rigaCellaBianca)>0)
+			dir = (rigaBloccoGriglia-rigaCellaBianca)>0 ? size: -size;
+			else if(rigaBloccoGriglia == rigaCellaBianca && Math.abs(colonnaBloccoGriglia-colonnaCellaBianca)>0)
+				dir = (colonnaBloccoGriglia-colonnaCellaBianca) >0 ? 1: -1;
+
+				if(dir!=0) {
+					//Muovi i tiles in quella direzione
+					do {
+						int newBlankPos = blankPos+dir;
+						tiles[blankPos] = tiles[newBlankPos];
+						blankPos= newBlankPos;
+					}while(blankPos!=clickPos);
+					tiles[blankPos] =0;
+				}
+				//Check per controllare che il gioco sia finito
+				gameOver= isSolved();
+
 	}
 
 	private void newGame() {
@@ -172,7 +186,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		while(!isSolvable()); //Fa fino a quando la griglia Ã¨ risolvibile
 		gameOver=false;
 		setInstance();
-//		initDlv();
+		//		initDlv();
 	}
 
 	private void reset() {
@@ -200,43 +214,43 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 		}
 	}
-	
-//	private void initDlv() {
-//	 handler=new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
-//	 InputProgram  program = new ASPInputProgram();
-//	 program.addFilesPath(encodingResource);
-//		program.addFilesPath(instanceResource);
-//		handler.addProgram(program);
-//		// register the class for reflection
-//				try {
-//					ASPMapper.getInstance().registerClass(Cell.class);
-//					
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//				
-//				Output o =  handler.startSync();
-//				
-//				AnswerSets answers = (AnswerSets) o;
-//				
-//				int n=0;
-//				for(AnswerSet a:answers.getAnswersets()){
-//					// System.out.println("AS n.: " + ++n + ": " + a);
-//					try {
-//
-//						for(Object obj:a.getAtoms()){
-//							if(obj instanceof Cell)  {
-//								Cell cella = (Cell) obj;
-//								System.out.print(cella + " ");
-//							}
-//						}
-//						System.out.println();
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					} 			
-//				}
-//	 
-//	}
+
+	//	private void initDlv() {
+	//	 handler=new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+	//	 InputProgram  program = new ASPInputProgram();
+	//	 program.addFilesPath(encodingResource);
+	//		program.addFilesPath(instanceResource);
+	//		handler.addProgram(program);
+	//		// register the class for reflection
+	//				try {
+	//					ASPMapper.getInstance().registerClass(Cell.class);
+	//					
+	//				} catch (Exception e) {
+	//					e.printStackTrace();
+	//				}
+	//				
+	//				Output o =  handler.startSync();
+	//				
+	//				AnswerSets answers = (AnswerSets) o;
+	//				
+	//				int n=0;
+	//				for(AnswerSet a:answers.getAnswersets()){
+	//					// System.out.println("AS n.: " + ++n + ": " + a);
+	//					try {
+	//
+	//						for(Object obj:a.getAtoms()){
+	//							if(obj instanceof Cell)  {
+	//								Cell cella = (Cell) obj;
+	//								System.out.print(cella + " ");
+	//							}
+	//						}
+	//						System.out.println();
+	//					} catch (Exception e) {
+	//						e.printStackTrace();
+	//					} 			
+	//				}
+	//	 
+	//	}
 	private void setInstance() {
 		int s=0;
 		instance="";
@@ -286,7 +300,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				}else if(st.toString().contains("canMoveRight")){
 					System.out.println("Muovi R");
 
-				}else if(st.toString().contains("canMoveUp")){
+				}else if(st.toString().contains("canMoveUP")){
 					System.out.println("Muovi UP");
 
 				}else if(st.toString().contains("canMoveLeft")){
@@ -331,10 +345,16 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	}
 
 
-	
-	
-	//PARTE GRAFICA
 
+
+	//PARTE GRAFICA
+	//setta proprietà grafiche del gioco
+	public void setGameFrame() {
+		setPreferredSize(new Dimension(dimension, dimension +margin));
+		setBackground(Color.WHITE);
+		setForeground(FOREGROUND_COLOR);
+		setFont(new Font("TimesRoman" ,Font.BOLD, 60));
+	}
 
 	private void drawGrid(Graphics2D g) {
 		for(int i =0;i<tiles.length;i++) {
