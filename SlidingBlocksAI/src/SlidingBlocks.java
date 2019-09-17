@@ -38,6 +38,7 @@ import it.unical.mat.embasp.languages.asp.ASPMapper;
 import it.unical.mat.embasp.languages.asp.AnswerSet;
 import it.unical.mat.embasp.languages.asp.AnswerSets;
 import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
+import it.unical.mat.embasp.specializations.dlv.Cell;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 
@@ -72,15 +73,17 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 	//Dimensione Griglia UI
 	private int gridSize;
-	
+
 	private boolean gameOver; //Vero se il gioco finisce, falso altrimenti
 
 	public String encoding = " "; //qua va impostata la lettura del file : Sliding-Blocks-Rules
 
 	public String instance= " ";	//qua vanno inserite le celle ( cioè i fatti ) dopo che è stato fatto lo shuffle, NB non dimenticare di aggiornare questo file ogni volta che si esegue un movimento delle celle. Vedi funzione setInstance
-	private static Handler handler=new DesktopHandler(new DLVDesktopService("lib/dlv.mingw.exe"));;
-	private static String encodingResource="encodings/Sliding-blocks-Rules";
-	private static String instanceResource="encodings/Sliding-blocks-instance";
+
+	private static String encodingResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
+	private static String instanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
+	private static Handler handler;
+
 	public SlidingBlocks (int size, int dim, int mar) {
 		this.size = size;
 		dimension = dim;
@@ -151,6 +154,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				//Ricolorazione panel
 				repaint();
 				setInstance();
+//				initDlv();
 				//System.out.println(instance);
 
 			}
@@ -168,6 +172,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		while(!isSolvable()); //Fa fino a quando la griglia Ã¨ risolvibile
 		gameOver=false;
 		setInstance();
+//		initDlv();
 	}
 
 	private void reset() {
@@ -195,7 +200,43 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 		}
 	}
-
+	
+//	private void initDlv() {
+//	 handler=new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+//	 InputProgram  program = new ASPInputProgram();
+//	 program.addFilesPath(encodingResource);
+//		program.addFilesPath(instanceResource);
+//		handler.addProgram(program);
+//		// register the class for reflection
+//				try {
+//					ASPMapper.getInstance().registerClass(Cell.class);
+//					
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				
+//				Output o =  handler.startSync();
+//				
+//				AnswerSets answers = (AnswerSets) o;
+//				
+//				int n=0;
+//				for(AnswerSet a:answers.getAnswersets()){
+//					// System.out.println("AS n.: " + ++n + ": " + a);
+//					try {
+//
+//						for(Object obj:a.getAtoms()){
+//							if(obj instanceof Cell)  {
+//								Cell cella = (Cell) obj;
+//								System.out.print(cella + " ");
+//							}
+//						}
+//						System.out.println();
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					} 			
+//				}
+//	 
+//	}
 	private void setInstance() {
 		int s=0;
 		instance="";
@@ -206,7 +247,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				s++;
 			}
 		}
-		Path path = Paths.get("encodings\\Sliding-blocks-instance");
+		Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
 
 		try {
 			Files.write(path, instance.getBytes());
@@ -235,11 +276,23 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 		int n=0;
 		for(AnswerSet a:answers.getAnswersets()){
-			System.out.println("AS n.: " + ++n + ": " + a);
+			//if(a.toString()=="canMove")
+			//System.out.println("AS n.: " + ++n + ": " + a);
 			String s2 = a.toString();
 			StringTokenizer st = new StringTokenizer(s2);
 			while (st.hasMoreTokens()) {
-				System.out.println(st.nextToken());
+				if(st.nextToken().contains("canMoveDown")) {	
+					System.out.println("Muovi giù");
+				}else if(st.toString().contains("canMoveRight")){
+					System.out.println("Muovi R");
+
+				}else if(st.toString().contains("canMoveUp")){
+					System.out.println("Muovi UP");
+
+				}else if(st.toString().contains("canMoveLeft")){
+					System.out.println("Muovi L");
+
+				}
 			}
 
 		}
@@ -277,6 +330,10 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		return true;
 	}
 
+
+	
+	
+	//PARTE GRAFICA
 
 
 	private void drawGrid(Graphics2D g) {
