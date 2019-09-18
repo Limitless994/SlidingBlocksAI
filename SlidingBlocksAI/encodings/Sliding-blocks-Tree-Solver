@@ -1,0 +1,4 @@
+suggestedMovesDown(ID):-canMoveDown(ID),not inRightPlace(ID).
+suggestedMovesUp(ID):-canMoveUp(ID),not inRightPlace(ID).
+suggestedMovesLeft(ID):-canMoveLeft(ID),not inRightPlace(ID).
+suggestedMovesRight(ID):-canMoveRight(ID),not inRightPlace(ID).
