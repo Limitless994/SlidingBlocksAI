@@ -22,12 +22,9 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 
 
 public class MainClass {
-
-
 	public static void main(String[] args) {
 		int dimension=3;
 		SlidingBlocks s= new SlidingBlocks(dimension, 1280, 30);
 		s.run(dimension, s);
-		//
 	}
 }

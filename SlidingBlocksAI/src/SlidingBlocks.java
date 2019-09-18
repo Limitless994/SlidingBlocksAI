@@ -82,8 +82,10 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 	public String encoding = " "; //qua va impostata la lettura del file : Sliding-Blocks-Rules
 	public String instance= " ";	//qua vanno inserite le celle ( cioè i fatti ) dopo che è stato fatto lo shuffle, NB non dimenticare di aggiornare questo file ogni volta che si esegue un movimento delle celle. Vedi funzione setInstance
-	private static String encodingResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
-	private static String instanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
+	private static String encodingResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
+	private static String instanceResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
+	private static String nextInstanceResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step";
+
 	private static Handler handler;  
 
 	private int coordinataXMouse;
@@ -225,7 +227,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	}
 	
 	public void initDlv() {
-	Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+	Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
 
 		// register the class for reflection
 		try {
@@ -279,7 +281,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 //	}
 		
 		private void setInstance() {
-			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
 			int s=0;
 			instance="";
 			for(int i= 1; i<=size;i++) {
@@ -289,7 +291,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 					s++;
 				}
 			}
-			Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
+			Path path = Paths.get("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
 	
 			try {
 				Files.write(path, instance.getBytes());
@@ -322,12 +324,33 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				//if(a.toString()=="canMove")
 				//System.out.println("AS n.: " + ++n + ": " + a);
 				String s2 = a.toString();
+				String nextInstance="";
 				StringTokenizer st = new StringTokenizer(s2);
-				System.out.println("Nuovi Answer");
-				while (st.hasMoreTokens()) {
-					String temp=st.nextToken();
-					if(temp.contains("canMoveDown")) {
-						System.out.println("Giù: " + temp );
+				while (st.hasMoreTokens()) { //per ognuno di questi answerset il programma deve essere in grado di orlare il file next-step con l'istanza aggiornata della mossa, ad esempio se canMoveDown sposti giù quella casella e 
+					String temp=st.nextToken();//ne calcoli le rispettive conseguenze. Questo va fatto per ognuno di questi fatti. Il tutto deve essere ricorsivo e deve continuare finché non trova la condizione di stop.
+					
+					if(temp.contains("canMoveDown")||temp.contains("canMoveRight")||temp.toString().contains("canMoveUP")||temp.toString().contains("canMoveLeft")||temp.toString().contains("inRightPlace")) {
+						temp = temp.replace(temp.substring(temp.length()-1), "");
+						nextInstance=(nextInstance +temp+".\n");
+					}
+					Path path2 = Paths.get("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
+					
+					try {
+						Files.write(path2, nextInstance.getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					
+					
+					
+					
+					/*if(temp.contains("canMoveDown")) { //Il metodo risolutivo deve essere tipo un albero, O(N)^N se ce lo chiedono. 
+						
+						
+						
 					}else if(temp.contains("canMoveRight")){
 						System.out.println("Destra: " + temp );
 	
@@ -337,7 +360,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 					}else if(temp.toString().contains("canMoveLeft")){
 						System.out.println("Sinistra: " + temp );
 	
-					}
+					}*/
 				}
 	
 			}
