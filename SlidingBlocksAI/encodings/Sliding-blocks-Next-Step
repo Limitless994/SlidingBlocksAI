@@ -1,4 +1,4 @@
-canMoveDown(5).
-canMoveLeft(1).
-canMoveRight(8).
-inRightPlace(5).
+canMoveDown(6).
+canMoveUP(2).
+canMoveLeft(7).
+canMoveRight(5).

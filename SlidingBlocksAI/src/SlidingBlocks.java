@@ -43,6 +43,7 @@ import it.unical.mat.embasp.specializations.dlv.Cell;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 import logica.Cella;
+import logica.Cella2;
 
 
 
@@ -82,9 +83,9 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 	public String encoding = " "; //qua va impostata la lettura del file : Sliding-Blocks-Rules
 	public String instance= " ";	//qua vanno inserite le celle ( cioè i fatti ) dopo che è stato fatto lo shuffle, NB non dimenticare di aggiornare questo file ogni volta che si esegue un movimento delle celle. Vedi funzione setInstance
-	private static String encodingResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
-	private static String instanceResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
-	private static String nextInstanceResource="C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step";
+	private static String encodingResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Rules";
+	private static String instanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance";
+	private static String nextInstanceResource="C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step";
 
 	private static Handler handler;  
 
@@ -161,19 +162,28 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		int rigaCellaBianca = blankPos /size;
 		//Conversione in coordinate 1D
 		int clickPos = rigaBloccoGriglia*size+colonnaBloccoGriglia;
-
+System.out.println("Click pos: " +clickPos);
 		int dir =0;
 
 		//Ricerca della direzione per il movimento multiplo dei tile uno alla volta
-		if(colonnaBloccoGriglia ==colonnaCellaBianca && Math.abs(rigaBloccoGriglia-rigaCellaBianca)>0)
+		if(colonnaBloccoGriglia ==colonnaCellaBianca && Math.abs(rigaBloccoGriglia-rigaCellaBianca)>0) {
 			dir = (rigaBloccoGriglia-rigaCellaBianca)>0 ? size: -size;
-			else if(rigaBloccoGriglia == rigaCellaBianca && Math.abs(colonnaBloccoGriglia-colonnaCellaBianca)>0)
+			System.out.println("DIR: " +dir);
+		}	
+			else if(rigaBloccoGriglia == rigaCellaBianca && Math.abs(colonnaBloccoGriglia-colonnaCellaBianca)>0) {
 				dir = (colonnaBloccoGriglia-colonnaCellaBianca) >0 ? 1: -1;
-
+				System.out.println("DIR: " +dir);
+			}
+				
 				if(dir!=0) {
 					//Muovi i tiles in quella direzione
+					//Se dir è negativo va verso le posizioni negative, in caso contrario positive (immagina asse x e y)
+					//Dir indica di quanti blocchi indietro o avanti deve andare il blocco bianco.
 					do {
 						int newBlankPos = blankPos+dir;
+						System.out.println("OldBlank: " +blankPos);
+						System.out.println("NewBlank: " +newBlankPos);
+						//Scambia il tile vuoto con la casella numerata
 						tiles[blankPos] = tiles[newBlankPos];
 						blankPos= newBlankPos;
 					}while(blankPos!=clickPos);
@@ -181,6 +191,11 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				}
 				//Check per controllare che il gioco sia finito
 				gameOver= isSolved();
+				
+				//debug caselle decommenta solo se vuoi vedere l'ordine della lista
+//				for(int i=0;i<tiles.length;i++) {
+//					System.out.println("Tile "+i+" : "+ tiles[i]);
+//				}
 
 	}
 
@@ -227,7 +242,6 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	}
 	
 	public void initDlv() {
-	Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
 
 		// register the class for reflection
 		try {
@@ -281,7 +295,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 //	}
 		
 		private void setInstance() {
-			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
 			int s=0;
 			instance="";
 			for(int i= 1; i<=size;i++) {
@@ -291,7 +305,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 					s++;
 				}
 			}
-			Path path = Paths.get("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
+			Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
 	
 			try {
 				Files.write(path, instance.getBytes());
@@ -308,7 +322,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	
 			// register the class for reflection
 			try {
-				ASPMapper.getInstance().registerClass(SLD.class);
+				ASPMapper.getInstance().registerClass(Cella2.class);
 	
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -333,7 +347,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 						temp = temp.replace(temp.substring(temp.length()-1), "");
 						nextInstance=(nextInstance +temp+".\n");
 					}
-					Path path2 = Paths.get("C:\\Users\\dkey1\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
+					Path path2 = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
 					
 					try {
 						Files.write(path2, nextInstance.getBytes());
@@ -351,14 +365,14 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 						
 						
 						
-					}else if(temp.contains("canMoveRight")){
-						System.out.println("Destra: " + temp );
-	
-					}else if(temp.toString().contains("canMoveUP")){
-						System.out.println("Sopra: " + temp );
-	
-					}else if(temp.toString().contains("canMoveLeft")){
-						System.out.println("Sinistra: " + temp );
+//					}else if(temp.contains("canMoveRight")){
+//						System.out.println("Destra: " + temp );
+//	
+//					}else if(temp.toString().contains("canMoveUP")){
+//						System.out.println("Sopra: " + temp );
+//	
+//					}else if(temp.toString().contains("canMoveLeft")){
+//						System.out.println("Sinistra: " + temp );
 	
 					}*/
 				}

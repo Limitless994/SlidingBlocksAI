@@ -1,8 +1,9 @@
+package logica;
 import it.unical.mat.embasp.languages.Id;
 import it.unical.mat.embasp.languages.Param;
 
-@Id("S")
-public class SLD {
+@Id("Cella2")
+public class Cella2 {
 	@Param(0)
 private int x;
 	@Param(1)
@@ -12,7 +13,7 @@ private int id;
 	@Param(3)
 private int n;
 
-public SLD(int x, int y, int id,int n) {
+public Cella2(int x, int y, int id,int n) {
 	this.x = x;
 	this.y = y;
 	this.id = id;
