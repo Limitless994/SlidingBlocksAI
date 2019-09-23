@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import it.unical.mat.embasp.base.Handler;
 import it.unical.mat.embasp.base.InputProgram;
@@ -23,8 +24,12 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 
 public class MainClass {
 	public static void main(String[] args) {
-		int dimension=3;
-		SlidingBlocks s= new SlidingBlocks(dimension, 1280, 30);
-		s.run(dimension, s);
+		int dimension=3;	
+			SlidingBlocks s= new SlidingBlocks(dimension, 1280, 30);
+			s.run(dimension, s);
+	
+		
 	}
+	
+
 }

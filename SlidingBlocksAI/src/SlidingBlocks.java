@@ -26,6 +26,7 @@ import java.util.function.Predicate;
 import it.unical.mat.embasp.languages.Id;
 import it.unical.mat.embasp.languages.Param;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -91,7 +92,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 
 	private int coordinataXMouse;
 	private int coordinataYMouse;
-	
+
 	ArrayList<Cella> listaCelle;
 
 	public SlidingBlocks (int size, int dim, int mar) {
@@ -107,10 +108,16 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		gridSize = (dim-2*margin);
 		tileSize = gridSize/ size;
 
-		setGameFrame();
-		gameOver = true;
-		addMouse();
-		newGame();
+	//Finestra di scelta modalità
+		if(JOptionPane.showConfirmDialog(null,"Vuoi avviare la versione automatizzata?", "Scelta Modalità", 1) == 0) {
+			setGameFrame();
+			gameOver = true;
+			addMouse();
+			newGame();
+		}
+		else {
+			
+		}
 	}
 
 
@@ -124,8 +131,8 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				//listener per interagire con il mouse sulla griglia
 
 				if(gameOver) {
-					newGame();
 
+					newGame();
 				}else {
 					coordinataXMouse= mousePos.getX();
 					coordinataYMouse= mousePos.getY();
@@ -133,12 +140,12 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 				}
 				//Ricolorazione panel
 				repaint();
-						
+
 				initDlv();
 				setInstance();  
-//				muoviCellaDlv();
-				
-				
+				//				muoviCellaDlv();
+
+
 				//System.out.println(instance);
 
 			}
@@ -162,7 +169,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		int rigaCellaBianca = blankPos /size;
 		//Conversione in coordinate 1D
 		int clickPos = rigaBloccoGriglia*size+colonnaBloccoGriglia;
-System.out.println("Click pos: " +clickPos);
+		System.out.println("Click pos: " +clickPos);
 		int dir =0;
 
 		//Ricerca della direzione per il movimento multiplo dei tile uno alla volta
@@ -170,32 +177,32 @@ System.out.println("Click pos: " +clickPos);
 			dir = (rigaBloccoGriglia-rigaCellaBianca)>0 ? size: -size;
 			System.out.println("DIR: " +dir);
 		}	
-			else if(rigaBloccoGriglia == rigaCellaBianca && Math.abs(colonnaBloccoGriglia-colonnaCellaBianca)>0) {
-				dir = (colonnaBloccoGriglia-colonnaCellaBianca) >0 ? 1: -1;
-				System.out.println("DIR: " +dir);
-			}
-				
-				if(dir!=0) {
-					//Muovi i tiles in quella direzione
-					//Se dir è negativo va verso le posizioni negative, in caso contrario positive (immagina asse x e y)
-					//Dir indica di quanti blocchi indietro o avanti deve andare il blocco bianco.
-					do {
-						int newBlankPos = blankPos+dir;
-						System.out.println("OldBlank: " +blankPos);
-						System.out.println("NewBlank: " +newBlankPos);
-						//Scambia il tile vuoto con la casella numerata
-						tiles[blankPos] = tiles[newBlankPos];
-						blankPos= newBlankPos;
-					}while(blankPos!=clickPos);
-					tiles[blankPos] =0;
-				}
-				//Check per controllare che il gioco sia finito
-				gameOver= isSolved();
-				
-				//debug caselle decommenta solo se vuoi vedere l'ordine della lista
-//				for(int i=0;i<tiles.length;i++) {
-//					System.out.println("Tile "+i+" : "+ tiles[i]);
-//				}
+		else if(rigaBloccoGriglia == rigaCellaBianca && Math.abs(colonnaBloccoGriglia-colonnaCellaBianca)>0) {
+			dir = (colonnaBloccoGriglia-colonnaCellaBianca) >0 ? 1: -1;
+			System.out.println("DIR: " +dir);
+		}
+
+		if(dir!=0) {
+			//Muovi i tiles in quella direzione
+			//Se dir è negativo va verso le posizioni negative, in caso contrario positive (immagina asse x e y)
+			//Dir indica di quanti blocchi indietro o avanti deve andare il blocco bianco.
+			do {
+				int newBlankPos = blankPos+dir;
+				System.out.println("OldBlank: " +blankPos);
+				System.out.println("NewBlank: " +newBlankPos);
+				//Scambia il tile vuoto con la casella numerata
+				tiles[blankPos] = tiles[newBlankPos];
+				blankPos= newBlankPos;
+			}while(blankPos!=clickPos);
+			tiles[blankPos] =0;
+		}
+		//Check per controllare che il gioco sia finito
+		gameOver= isSolved();
+
+		//debug caselle decommenta solo se vuoi vedere l'ordine della lista
+		//				for(int i=0;i<tiles.length;i++) {
+		//					System.out.println("Tile "+i+" : "+ tiles[i]);
+		//				}
 
 	}
 
@@ -209,15 +216,15 @@ System.out.println("Click pos: " +clickPos);
 		gameOver=false;
 		//		
 		initDlv();
-		
+
 		setInstance();
-//		muoviCellaDlv();
+		//		muoviCellaDlv();
 	}
 
 	private void reset() {
 		for(int i= 0; i<tiles.length;i++) {
 			tiles[i] = (i+1) % tiles.length;
-			
+
 		}
 		//mettiamo la cella bianca ultima
 		blankPos = tiles.length -1;
@@ -240,131 +247,131 @@ System.out.println("Click pos: " +clickPos);
 
 		}
 	}
-	
+
 	public void initDlv() {
 
 		// register the class for reflection
 		try {
 			ASPMapper.getInstance().registerClass(Cella.class);
-	
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
-//	private void muoviCellaDlv() {
-//		handler.removeAll();
-//		
-//		InputProgram  facts = new ASPInputProgram();
-//		
-//		for(Cella cell: listaCelle) {
-//			try {
-//				facts.addObjectInput(cell);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		handler.addProgram(facts);
-//		facts.toString();
-//		
-//		InputProgram encode = new ASPInputProgram();
-//		encode.addFilesPath(encodingResource);
-//		encode.addFilesPath(instanceResource);
-//		handler.addProgram(encode);
-//		
-//		Output o =  handler.startSync();
-//		AnswerSets answers = (AnswerSets) o;
-//		// register the class for reflection	
-//		
-//		for(AnswerSet a : answers.getAnswersets()){
-//			// System.out.println("AS n.: " + ++n + ": " + a);
-//			try {
-//				for(Object obj:a.getAtoms()){
-//					if(obj instanceof Cella)  {
-//						Cella cella = (Cella) obj;
-//						System.out.print(cella + " ");
-//					}
-//				}
-//				System.out.println();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			} 			
-//		}
-//
-//	}
-		
-		private void setInstance() {
-			Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
-			int s=0;
-			instance="";
-			for(int i= 1; i<=size;i++) {
-				for(int j= 1; j<=size;j++) {
-					if(tiles[s]==0) instance=(instance + new String("empty("+i+","+j+").\n"));
-					else instance=(instance + new String("cell("+i+","+j+","+tiles[s]+","+ s +").\n"));
-					s++;
+	//	private void muoviCellaDlv() {
+	//		handler.removeAll();
+	//		
+	//		InputProgram  facts = new ASPInputProgram();
+	//		
+	//		for(Cella cell: listaCelle) {
+	//			try {
+	//				facts.addObjectInput(cell);
+	//			} catch (Exception e) {
+	//				e.printStackTrace();
+	//			}
+	//		}
+	//		handler.addProgram(facts);
+	//		facts.toString();
+	//		
+	//		InputProgram encode = new ASPInputProgram();
+	//		encode.addFilesPath(encodingResource);
+	//		encode.addFilesPath(instanceResource);
+	//		handler.addProgram(encode);
+	//		
+	//		Output o =  handler.startSync();
+	//		AnswerSets answers = (AnswerSets) o;
+	//		// register the class for reflection	
+	//		
+	//		for(AnswerSet a : answers.getAnswersets()){
+	//			// System.out.println("AS n.: " + ++n + ": " + a);
+	//			try {
+	//				for(Object obj:a.getAtoms()){
+	//					if(obj instanceof Cella)  {
+	//						Cella cella = (Cella) obj;
+	//						System.out.print(cella + " ");
+	//					}
+	//				}
+	//				System.out.println();
+	//			} catch (Exception e) {
+	//				e.printStackTrace();
+	//			} 			
+	//		}
+	//
+	//	}
+
+	private void setInstance() {
+		Handler handler = new DesktopHandler(new DLVDesktopService("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\lib\\dlv.mingw.exe"));
+		int s=0;
+		instance="";
+		for(int i= 1; i<=size;i++) {
+			for(int j= 1; j<=size;j++) {
+				if(tiles[s]==0) instance=(instance + new String("empty("+i+","+j+").\n"));
+				else instance=(instance + new String("cell("+i+","+j+","+tiles[s]+","+ s +").\n"));
+				s++;
+			}
+		}
+		Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
+
+		try {
+			Files.write(path, instance.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		InputProgram  program = new ASPInputProgram();
+		//			program.addProgram(encoding);
+		//			program.addProgram(instance);
+		program.addFilesPath(encodingResource);
+		program.addFilesPath(instanceResource);
+		handler.addProgram(program);
+
+		// register the class for reflection
+		try {
+			ASPMapper.getInstance().registerClass(Cella2.class);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Output o =  handler.startSync();
+
+		AnswerSets answers = (AnswerSets) o;
+
+		int n=0;
+
+		for(AnswerSet a:answers.getAnswersets()){
+			//if(a.toString()=="canMove")
+			//System.out.println("AS n.: " + ++n + ": " + a);
+			String s2 = a.toString();
+			String nextInstance="";
+			StringTokenizer st = new StringTokenizer(s2);
+			while (st.hasMoreTokens()) { //per ognuno di questi answerset il programma deve essere in grado di orlare il file next-step con l'istanza aggiornata della mossa, ad esempio se canMoveDown sposti giù quella casella e 
+				String temp=st.nextToken();//ne calcoli le rispettive conseguenze. Questo va fatto per ognuno di questi fatti. Il tutto deve essere ricorsivo e deve continuare finché non trova la condizione di stop.
+
+				if(temp.contains("canMoveDown")||temp.contains("canMoveRight")||temp.toString().contains("canMoveUP")||temp.toString().contains("canMoveLeft")||temp.toString().contains("inRightPlace")) {
+					temp = temp.replace(temp.substring(temp.length()-1), "");
+					nextInstance=(nextInstance +temp+".\n");
 				}
-			}
-			Path path = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-instance");
-	
-			try {
-				Files.write(path, instance.getBytes());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			InputProgram  program = new ASPInputProgram();
-			//			program.addProgram(encoding);
-			//			program.addProgram(instance);
-			program.addFilesPath(encodingResource);
-			program.addFilesPath(instanceResource);
-			handler.addProgram(program);
-	
-			// register the class for reflection
-			try {
-				ASPMapper.getInstance().registerClass(Cella2.class);
-	
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-	
-			Output o =  handler.startSync();
-	
-			AnswerSets answers = (AnswerSets) o;
-	
-			int n=0;
-			
-			for(AnswerSet a:answers.getAnswersets()){
-				//if(a.toString()=="canMove")
-				//System.out.println("AS n.: " + ++n + ": " + a);
-				String s2 = a.toString();
-				String nextInstance="";
-				StringTokenizer st = new StringTokenizer(s2);
-				while (st.hasMoreTokens()) { //per ognuno di questi answerset il programma deve essere in grado di orlare il file next-step con l'istanza aggiornata della mossa, ad esempio se canMoveDown sposti giù quella casella e 
-					String temp=st.nextToken();//ne calcoli le rispettive conseguenze. Questo va fatto per ognuno di questi fatti. Il tutto deve essere ricorsivo e deve continuare finché non trova la condizione di stop.
-					
-					if(temp.contains("canMoveDown")||temp.contains("canMoveRight")||temp.toString().contains("canMoveUP")||temp.toString().contains("canMoveLeft")||temp.toString().contains("inRightPlace")) {
-						temp = temp.replace(temp.substring(temp.length()-1), "");
-						nextInstance=(nextInstance +temp+".\n");
-					}
-					Path path2 = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
-					
-					try {
-						Files.write(path2, nextInstance.getBytes());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					
-					
-					
-					
-					
-					/*if(temp.contains("canMoveDown")) { //Il metodo risolutivo deve essere tipo un albero, O(N)^N se ce lo chiedono. 
-						
-						
-						
+				Path path2 = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
+
+				try {
+					Files.write(path2, nextInstance.getBytes());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+
+
+
+
+
+				/*if(temp.contains("canMoveDown")) { //Il metodo risolutivo deve essere tipo un albero, O(N)^N se ce lo chiedono. 
+
+
+
 //					}else if(temp.contains("canMoveRight")){
 //						System.out.println("Destra: " + temp );
 //	
@@ -373,12 +380,12 @@ System.out.println("Click pos: " +clickPos);
 //	
 //					}else if(temp.toString().contains("canMoveLeft")){
 //						System.out.println("Sinistra: " + temp );
-	
+
 					}*/
-				}
-	
 			}
+
 		}
+	}
 
 
 
