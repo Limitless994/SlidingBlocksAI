@@ -1,3 +1,4 @@
+package vecchio;
 
 
 import java.awt.BorderLayout;
@@ -45,8 +46,6 @@ import it.unical.mat.embasp.specializations.dlv.Cell;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 import javafx.util.Pair;
-import logica.Cella;
-import logica.Cella2;
 
 
 
