@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -24,7 +23,7 @@ import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
 
 public class MainClass {
 	public static void main(String[] args) {
-		int dimension=3;	
+		int dimension=6;	
 			SlidingBlocks s= new SlidingBlocks(dimension, 1280, 30);
 			s.run(dimension, s);
 	

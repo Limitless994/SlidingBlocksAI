@@ -14,6 +14,7 @@ public class Start {
 	
 	@Param(2)
 	int direzione;
+	
 	public Start() {
 		this.x = 0;
 		this.y = 0;

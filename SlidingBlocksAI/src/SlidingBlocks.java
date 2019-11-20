@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.function.Predicate;
@@ -43,6 +44,7 @@ import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
 import it.unical.mat.embasp.specializations.dlv.Cell;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
+import javafx.util.Pair;
 import logica.Cella;
 import logica.Cella2;
 
@@ -93,8 +95,8 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 	private int coordinataXMouse;
 	private int coordinataYMouse;
 
-	ArrayList<Cella> listaCelle;
-
+	List<String> listaMosse = new ArrayList<String>();
+	List<Pair<String,String>> Nodi=new ArrayList<Pair<String,String>>();
 	public SlidingBlocks (int size, int dim, int mar) {
 		this.size = size;
 		dimension = dim;
@@ -108,7 +110,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		gridSize = (dim-2*margin);
 		tileSize = gridSize/ size;
 
-	//Finestra di scelta modalità
+		//Finestra di scelta modalità
 		if(JOptionPane.showConfirmDialog(null,"Vuoi avviare la versione automatizzata?", "Scelta Modalità", 1) == 0) {
 			setGameFrame();
 			gameOver = true;
@@ -116,7 +118,7 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 			newGame();
 		}
 		else {
-			
+
 		}
 	}
 
@@ -203,6 +205,10 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 		//				for(int i=0;i<tiles.length;i++) {
 		//					System.out.println("Tile "+i+" : "+ tiles[i]);
 		//				}
+
+	}
+
+	public void scambiaTile(int newBlankPosition) {
 
 	}
 
@@ -350,8 +356,9 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 			while (st.hasMoreTokens()) { //per ognuno di questi answerset il programma deve essere in grado di orlare il file next-step con l'istanza aggiornata della mossa, ad esempio se canMoveDown sposti giù quella casella e 
 				String temp=st.nextToken();//ne calcoli le rispettive conseguenze. Questo va fatto per ognuno di questi fatti. Il tutto deve essere ricorsivo e deve continuare finché non trova la condizione di stop.
 
-				if(temp.contains("canMoveDown")||temp.contains("canMoveRight")||temp.toString().contains("canMoveUP")||temp.toString().contains("canMoveLeft")||temp.toString().contains("inRightPlace")) {
+				if(temp.contains("canMoveDown")||temp.contains("canMoveRight")||temp.toString().contains("canMoveUP")||temp.toString().contains("canMoveLeft")) {
 					temp = temp.replace(temp.substring(temp.length()-1), "");
+					listaMosse.add(temp);
 					nextInstance=(nextInstance +temp+".\n");
 				}
 				Path path2 = Paths.get("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\encodings\\Sliding-blocks-Next-Step");
@@ -385,8 +392,57 @@ public class SlidingBlocks extends JPanel{ //jpanel disegna la griglia in un pan
 			}
 
 		}
+
+		//		for(String stringa: listaMosse) {
+		//			System.out.println(stringa);
+		//		}
+		//	
+
+		for(String t:listaMosse) {
+			Pair<String,String> current=new Pair(t+".\n",instance);
+			Nodi.add(current);
+		}
+		for(Pair<String,String> pair: Nodi) {
+			System.out.println("Pair " + pair.getKey()+ pair.getValue());
+		}
 	}
 
+	//	public static String extractNumber(final String str) {                
+	//
+	//		if(str == null || str.isEmpty()) return "";
+	//
+	//		StringBuilder sb = new StringBuilder();
+	//		boolean found = false;
+	//		for(char c : str.toCharArray()){
+	//			if(Character.isDigit(c)){
+	//				sb.append(c);
+	//				found = true;
+	//			} else if(found){
+	//				// If we already found a digit before and this char is not a digit, stop looping
+	//				break;                
+	//			}
+	//		}
+	//
+	//		return sb.toString();
+	//	}
+	//
+	//	private void muoviCella(String mossa){
+	//		int posizione= Integer.parseInt(extractNumber(mossa)) ;
+	//		
+	//		if(mossa.contains("Down")) {
+	//
+	//		}
+	//		else if(mossa.contains("Up")) {
+	//
+	//		}
+	//		else if(mossa.contains("Right")) {
+	//
+	//		}
+	//		else if(mossa.contains("Left")) {
+	//
+	//		}
+	//
+	//	}
 
 
 
