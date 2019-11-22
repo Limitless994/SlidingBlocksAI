@@ -1,10 +1,7 @@
-package nuovo;
+package vecchio;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-
-import gfx.Display;
-import gfx.MouseManager;
 
 
 

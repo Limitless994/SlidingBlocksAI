@@ -1,6 +1,4 @@
-package nuovo;
-
-import gfx.MouseManager;
+package vecchio;
 
 public class GameHandler {
 	

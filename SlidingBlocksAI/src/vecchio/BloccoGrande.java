@@ -1,8 +1,6 @@
-package Entity;
+package vecchio;
 
 import java.awt.Graphics;
-
-import nuovo.GameHandler;
 
 
 
@@ -28,7 +26,7 @@ public class BloccoGrande extends Blocco{
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(gfx.Assets.bloccoGrande, (int) (x), (int) (y), (int)(width*0.8),(int) (height*0.8), null);
+		g.drawImage(vecchio.Assets.bloccoGrande, (int) (x), (int) (y), (int)(width*0.8),(int) (height*0.8), null);
 		
 	}
 

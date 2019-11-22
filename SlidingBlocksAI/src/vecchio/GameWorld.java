@@ -1,8 +1,6 @@
-package nuovo;
+package vecchio;
 
 import java.util.ArrayList;
-
-import Entity.Blocco;
 
 public class GameWorld {
 	

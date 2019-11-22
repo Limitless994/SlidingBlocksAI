@@ -1,10 +1,7 @@
-package Entity;
+package vecchio;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
-
-import nuovo.GameHandler;
 
 public abstract class Blocco {
 

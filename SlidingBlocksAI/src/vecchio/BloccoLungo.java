@@ -1,18 +1,17 @@
-package Entity;
+package vecchio;
 
 import java.awt.Graphics;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import nuovo.GameHandler;
 
-public class BloccoPiccolo extends Blocco{
+public class BloccoLungo extends Blocco{
 
 	int width = 32;
 	int height = 32;
 
 
-	public BloccoPiccolo(GameHandler handler, float x, float y) {
+	public BloccoLungo(GameHandler handler, float x, float y) {
 		super(handler, x, y);
 		bounds.x = 3;
 		bounds.y = (int) (height / 2f);
@@ -28,9 +27,11 @@ public class BloccoPiccolo extends Blocco{
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(gfx.Assets.bloccoGrande, (int) (x), (int) (y), (int)(width*0.8),(int) (height*0.8), null);
+		g.drawImage(vecchio.Assets.bloccoLungo, (int) (x), (int) (y), (int)(width*0.8),(int) (height*0.8), null);
 		
 	}
+
+
 
 
 
