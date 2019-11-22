@@ -33,7 +33,7 @@ public class PuzzleCreator extends JFrame
 	protected ArrayList<Block> blocks;					
 	protected int rows;			
 	protected int columns;		
-	
+	private String percorso = "C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\livelli\\";
 	 
 	public PuzzleCreator() 
 	{
@@ -73,7 +73,7 @@ public class PuzzleCreator extends JFrame
 				System.exit(0);
 			}
 
-			Scanner fileReader = new Scanner(new File("C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\livelli\\"+puzzleFiles.get(source)));
+			Scanner fileReader = new Scanner(new File(percorso+puzzleFiles.get(source)));
 			rows = fileReader.nextInt() + 2;		// +2 for a border
 			columns = fileReader.nextInt() + 2;
 
