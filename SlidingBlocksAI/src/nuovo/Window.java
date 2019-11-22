@@ -55,7 +55,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 	private int rigaVincita;
 	private int colonnaVincita;
-
+	
 	public Window() 
 	{
 		//---------------------------------------------------------
@@ -95,6 +95,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		game.setBackground(Color.GRAY);
 		help.setBackground(Color.GRAY);
 		menuBar.setBackground(Color.GRAY);
+		
 
 		setJMenuBar(menuBar);	// Add menuBar to the frame
 
@@ -307,7 +308,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			}
 			else {
 				blockButtons[i].setBackground(Color.yellow);
-
+//				blockButtons[i].setIcon(new ImageIcon("C:/Users/ricky/git/SlidingBlocksAI/SlidingBlocksAI/blocchi/bloccoPiccolo.PNG"));
 			}
 
 			blockPanel.add(blockButtons[i], constraints);
