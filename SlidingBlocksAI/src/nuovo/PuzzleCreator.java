@@ -94,6 +94,7 @@ public class PuzzleCreator extends JFrame
 					board[i][j] = '*';
 
 			boolean containsGoal = false;
+			boolean containsWin = false;
 			int blockCount = 49;	// ASCII value for 1
 
 			// Read in each block and set it on the board
@@ -161,8 +162,9 @@ public class PuzzleCreator extends JFrame
 				// 'v' for vertical
 				// 'b' for both
 				// 'n' for none
+				// w for winblock
 				//---------------------------------------------------------
-				if (direction == 'h' || direction == 'v' || direction == 'b' || direction == 'n')
+				if (direction == 'h' || direction == 'v' || direction == 'b' || direction == 'n' || direction == 'w')
 				{
 					// Intentionally left empty
 				}
@@ -174,7 +176,7 @@ public class PuzzleCreator extends JFrame
 				}
 
 				//---------------------------------------------------------
-				// Passed all tests so add the block to the board
+				// Passed all tests so add the block to the board QUI CREA GLI ID DEI BLOCCHI
 				//---------------------------------------------------------
 				char blockID;
 				if (!containsGoal)	// If there is not a goal piece yet then add one
@@ -189,6 +191,17 @@ public class PuzzleCreator extends JFrame
 
 					containsGoal = true;
 					blockID = 'Z';
+				}
+				else if(containsGoal==true && containsWin==false) {
+					for (int i=0; i<width; i++)
+						board[startrow][startcol+i] = 'W';
+
+					// Add the columns
+					for (int i=0; i<height; i++)
+						board[startrow+i][startcol] = 'W';
+					
+					containsWin=true;
+					blockID = 'W';
 				}
 				else
 				{

@@ -1,14 +1,5 @@
 package nuovo;
 
-
-
-/**------------------------------------------------------------------------
- * 		@author Adam Socik
- * 		March 2014
- * 		CS 342 Software Design
- * 							
- * This class searches a puzzle for the shortest/quickest solution
- * ------------------------------------------------------------------------*/
 import java.util.*;
 
 public class PuzzleSolver
