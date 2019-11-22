@@ -55,7 +55,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 	private int rigaVincita;
 	private int colonnaVincita;
-	
+
 	public Window() 
 	{
 		//---------------------------------------------------------
@@ -95,7 +95,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		game.setBackground(Color.GRAY);
 		help.setBackground(Color.GRAY);
 		menuBar.setBackground(Color.GRAY);
-		
+
 
 		setJMenuBar(menuBar);	// Add menuBar to the frame
 
@@ -285,14 +285,13 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		{	
 			// Create button with ID
 			String s = "" + puzzle.blocks.get(i).ID;
-			blockButtons[i]= new JButton(s);
+			blockButtons[i]= new JButton();
 
 			// Set location and dimensions of button
 			constraints.gridx = puzzle.blocks.get(i).startcol;
 			constraints.gridy = puzzle.blocks.get(i).startrow;
 			constraints.gridheight = puzzle.blocks.get(i).height;
 			constraints.gridwidth = puzzle.blocks.get(i).width;
-
 
 			// Make buttons fill space on grid
 			constraints.weightx = constraints.weighty = 1;
@@ -308,7 +307,12 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			}
 			else {
 				blockButtons[i].setBackground(Color.yellow);
-//				blockButtons[i].setIcon(new ImageIcon("C:/Users/ricky/git/SlidingBlocksAI/SlidingBlocksAI/blocchi/bloccoPiccolo.PNG"));
+
+				ImageIcon icon =new ImageIcon("C:/Users/ricky/git/SlidingBlocksAI/SlidingBlocksAI/blocchi/bloccoPiccolo.PNG");
+				Image img = icon .getImage() ;  
+				Image newimg = img.getScaledInstance( 180, 20,  java.awt.Image.SCALE_SMOOTH ) ;  
+				icon = new ImageIcon( newimg );
+				blockButtons[i].setIcon(icon);
 			}
 
 			blockPanel.add(blockButtons[i], constraints);
@@ -329,10 +333,10 @@ public class Window extends JFrame implements MouseListener, ActionListener
 				constraints.gridwidth = 1;
 
 				// Make buttons fill space on grid
-				constraints.weightx = constraints.weighty = 1;
-				constraints.fill = GridBagConstraints.BOTH;
-				blockPanel.add(temp, constraints);
-				blockPanel.setBackground(Color.black);
+//				constraints.weightx = constraints.weighty = 1;
+//				constraints.fill = GridBagConstraints.BOTH;
+//				blockPanel.add(temp, constraints);
+//				blockPanel.setBackground(Color.black);
 			}
 		}
 
@@ -682,8 +686,8 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 						return;
 					}
-					
-			
+
+
 				}
 			}
 		}
