@@ -285,7 +285,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		{	
 			// Create button with ID
 			String s = "" + puzzle.blocks.get(i).ID;
-			blockButtons[i]= new JButton();
+			blockButtons[i]= new JButton(s);
 
 			// Set location and dimensions of button
 			constraints.gridx = puzzle.blocks.get(i).startcol;
@@ -302,17 +302,12 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			if(blockButtons[i].getText().equals("Z")) {
 				blockButtons[i].setBackground(Color.red);
 			}
-			else if(blockButtons[i].getText().equals("W")) {
-				blockButtons[i].setBackground(Color.cyan);
-			}
+//			else if(blockButtons[i].getText().equals("W")) {
+//				blockButtons[i].setBackground(Color.cyan);
+//			}
 			else {
 				blockButtons[i].setBackground(Color.yellow);
-
-				ImageIcon icon =new ImageIcon("C:/Users/ricky/git/SlidingBlocksAI/SlidingBlocksAI/blocchi/bloccoPiccolo.PNG");
-				Image img = icon .getImage() ;  
-				Image newimg = img.getScaledInstance( 180, 20,  java.awt.Image.SCALE_SMOOTH ) ;  
-				icon = new ImageIcon( newimg );
-				blockButtons[i].setIcon(icon);
+				blockButtons[i].setIcon(new ImageIcon("/blocchi/blocco.png"));
 			}
 
 			blockPanel.add(blockButtons[i], constraints);
@@ -333,10 +328,10 @@ public class Window extends JFrame implements MouseListener, ActionListener
 				constraints.gridwidth = 1;
 
 				// Make buttons fill space on grid
-//				constraints.weightx = constraints.weighty = 1;
-//				constraints.fill = GridBagConstraints.BOTH;
-//				blockPanel.add(temp, constraints);
-//				blockPanel.setBackground(Color.black);
+				constraints.weightx = constraints.weighty = 1;
+				constraints.fill = GridBagConstraints.BOTH;
+				blockPanel.add(temp, constraints);
+				blockPanel.setBackground(Color.black);
 			}
 		}
 
@@ -344,14 +339,14 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		blockPanel.revalidate();
 		blockPanel.repaint();
 
-		System.out.println("Puzzle " + ":");
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j=0; j<8; j++)
-				System.out.print(puzzle.board[i][j] + " ");
-
-			System.out.println();
-		}
+//		System.out.println("Puzzle " + ":");
+//		for (int i = 0; i < 8; i++)
+//		{
+//			for (int j=0; j<8; j++)
+//				System.out.print(puzzle.board[i][j] + " ");
+//
+//			System.out.println();
+//		}
 	}
 
 	/**------------------------------------------------------------------------
