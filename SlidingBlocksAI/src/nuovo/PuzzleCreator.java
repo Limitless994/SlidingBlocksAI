@@ -33,8 +33,9 @@ public class PuzzleCreator extends JFrame
 	protected ArrayList<Block> blocks;					
 	protected int rows;			
 	protected int columns;		
-	private String percorso = "livelli\\";
-	 
+//	private String percorso = "livelli\\";
+	
+	private String percorso = "C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\livelli\\";
 	public PuzzleCreator() 
 	{
 		puzzleCounter = 0;
@@ -112,23 +113,26 @@ public class PuzzleCreator extends JFrame
 				// First set checks if block falls in valid range of rows
 				// Second set calculates max possible height of a block can fit in 
 				// from a given starting point and sees if the block would fit
-				if (!((startrow > 0 && startrow < rows-1) && ((rows - startrow - 1) >= height)))
-				{
-					System.out.println("Error: block does not fit on board.\n Check rows or height of: " 
-							+ startrow + " " + startcol + " " + width + " " + height + " " + direction);
-					continue;	// Skip processing the rest of the piece 
-				}
+				if(direction!= 'w') {
+					if (!((startrow > 0 && startrow < rows-1) && ((rows - startrow - 1) >= height)))
+					{
+						System.out.println("Error: block does not fit on board.\n Check rows or height of: " 
+								+ startrow + " " + startcol + " " + width + " " + height + " " + direction);
+						continue;	// Skip processing the rest of the piece 
+					}
 
-				// First set checks if block falls in valid range of columns
-				// Second set calculates max possible width of a block can fit in 
-				// from a given starting point and sees if the block would fit
-				if (!((startcol > 0 && startcol < columns-1) && ((columns - startcol - 1) >= width)))
-				{
-					System.out.println("Error: block does not fit on board.\n Check columns or width of: " 
-							+ startrow + " " + startcol + " " + width + " " + height + " " + direction);
-					continue;	// Skip processing the rest of the piece 
-				}
+					// First set checks if block falls in valid range of columns
+					// Second set calculates max possible width of a block can fit in 
+					// from a given starting point and sees if the block would fit
+					if (!((startcol > 0 && startcol < columns-1) && ((columns - startcol - 1) >= width)))
+					{
+						System.out.println("Error: block does not fit on board.\n Check columns or width of: " 
+								+ startrow + " " + startcol + " " + width + " " + height + " " + direction);
+						continue;	// Skip processing the rest of the piece 
+					}
 
+				}
+			
 				//---------------------------------------------------------
 				// Make sure that new block does not overlap old ones
 				//---------------------------------------------------------
@@ -164,7 +168,7 @@ public class PuzzleCreator extends JFrame
 				// 'n' for none
 				// w for winblock
 				//---------------------------------------------------------
-				if (direction == 'h' || direction == 'v' || direction == 'b' || direction == 'n' || direction == 'w')
+				if (direction == 'h' || direction == 'v' || direction == 'b' || direction == 'n' || direction == 'w' || direction == 'l')
 				{
 					// Intentionally left empty
 				}
@@ -236,6 +240,7 @@ public class PuzzleCreator extends JFrame
 				{
 					if (board[i][j] == '*')
 						board[i][j] = '.';
+	
 				}
 			}
 
@@ -277,6 +282,16 @@ public class PuzzleCreator extends JFrame
 		}
 	}
 
+	public void printBoard() {
+		System.out.println("Puzzle " + puzzleCounter + ":");
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j=0; j<columns; j++)
+				System.out.print(board[i][j] + " ");
+
+			System.out.println();
+		}
+	}
 	/**------------------------------------------------------------------------
 	 * Method prompts the user for a filename to add as a puzzle and checks if
 	 * the file exists. If it does, then the file is used to create a new puzzle.

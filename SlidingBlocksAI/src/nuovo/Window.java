@@ -260,6 +260,9 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		}
 	}
 
+
+
+
 	////////////////////////////////////////////////////////////////////////////////////
 	// Code below is for updating the board of blocks in the GUI and supporting methods
 	////////////////////////////////////////////////////////////////////////////////////
@@ -302,9 +305,9 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			if(blockButtons[i].getText().equals("Z")) {
 				blockButtons[i].setBackground(Color.red);
 			}
-//			else if(blockButtons[i].getText().equals("W")) {
-//				blockButtons[i].setBackground(Color.cyan);
-//			}
+			else if(blockButtons[i].getText().equals("W")) {
+				blockButtons[i].setBackground(Color.cyan);
+			}
 			else {
 				blockButtons[i].setBackground(Color.yellow);
 				blockButtons[i].setIcon(new ImageIcon("/blocchi/blocco.png"));
@@ -312,41 +315,67 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 			blockPanel.add(blockButtons[i], constraints);
 		}
-
+			
 		// Add the empty boxes - needed to maintain spacing
-		for (int i=1; i<puzzle.rows-1; i++)
+		//Modificato, se vuoi togliere i bordi fai partire i e j da 1 e falle arrivare fino a colonne e righe -1. Togli l'if e fai diventare l'else norma
+		for (int i=0; i<puzzle.rows; i++)
 		{
-			for (int j=1; j<puzzle.columns-1; j++)
+			for (int j=0; j<puzzle.columns; j++)
 			{
-				if (puzzle.board[i][j] == '.');
-				JButton temp = new JButton();
-				temp.setBackground(Color.white);
-				// Set location and dimensions of button
-				constraints.gridx = i;
-				constraints.gridy = j;
-				constraints.gridheight = 1;
-				constraints.gridwidth = 1;
+				
+				
+//				JButton temp = new JButton();
+//				temp.setBackground(Color.black);
+//				constraints.gridx = i;
+//				constraints.gridy = j;
+//				constraints.gridheight = 1;
+//				constraints.gridwidth = 1;
+//
+//				// Make buttons fill space on grid
+//				constraints.weightx = constraints.weighty = 1;
+//				constraints.fill = GridBagConstraints.BOTH;
+//				blockPanel.add(temp, constraints);		
+////				
+				if (puzzle.board[i][j] == '*') {
+					JLabel label = new JLabel();
+					label.setBackground(Color.black);
+					// Set location and dimensions of button
+					constraints.gridx = i;
+					constraints.gridy = j;
+					constraints.gridheight = 1;
+					constraints.gridwidth = 1;
+					constraints.weightx = constraints.weighty = 1;
+					constraints.fill = GridBagConstraints.BOTH;
+					blockPanel.add(label, constraints);
+				}else {
+					JButton temp = new JButton();
 
-				// Make buttons fill space on grid
-				constraints.weightx = constraints.weighty = 1;
-				constraints.fill = GridBagConstraints.BOTH;
-				blockPanel.add(temp, constraints);
-				blockPanel.setBackground(Color.black);
+					temp.setBackground(Color.white);
+				
+					
+					// Set location and dimensions of button
+					constraints.gridx = i;
+					constraints.gridy = j;
+					constraints.gridheight = 1;
+					constraints.gridwidth = 1;
+
+					// Make buttons fill space on grid
+					constraints.weightx = constraints.weighty = 1;
+					constraints.fill = GridBagConstraints.BOTH;
+					blockPanel.add(temp, constraints);
+					blockPanel.setBackground(Color.black);
+				}
+
+
 			}
+
 		}
+
 
 		// Update the GridBagLayout
 		blockPanel.revalidate();
 		blockPanel.repaint();
 
-//		System.out.println("Puzzle " + ":");
-//		for (int i = 0; i < 8; i++)
-//		{
-//			for (int j=0; j<8; j++)
-//				System.out.print(puzzle.board[i][j] + " ");
-//
-//			System.out.println();
-//		}
 	}
 
 	/**------------------------------------------------------------------------
@@ -445,6 +474,8 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			checkIfWon();
 			//			puzzleSolver = new PuzzleSolver(puzzle.rows, puzzle.columns, puzzle.board, puzzle.blocks);
 		}
+		creaMatriceAdiacenza();
+		puzzle.printBoard();
 	}
 
 	/**------------------------------------------------------------------------
@@ -502,6 +533,8 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			checkIfWon();
 			//			puzzleSolver = new PuzzleSolver(puzzle.rows, puzzle.columns, puzzle.board, puzzle.blocks);
 		}
+		creaMatriceAdiacenza();
+		puzzle.printBoard();
 	}
 
 	/**------------------------------------------------------------------------
@@ -556,6 +589,8 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			checkIfWon();
 			//			puzzleSolver = new PuzzleSolver(puzzle.rows, puzzle.columns, puzzle.board, puzzle.blocks);
 		}
+		creaMatriceAdiacenza();
+		puzzle.printBoard();
 	}
 
 	/**------------------------------------------------------------------------
@@ -611,6 +646,8 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			checkIfWon();
 			//			puzzleSolver = new PuzzleSolver(puzzle.rows, puzzle.columns, puzzle.board, puzzle.blocks);
 		}
+		creaMatriceAdiacenza();
+		puzzle.printBoard();
 	}
 
 	/**------------------------------------------------------------------------
@@ -729,6 +766,25 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}
+
+
+	public char[][] creaMatriceAdiacenza() {
+
+		char[][] matriceAdiacenza = new char[puzzle.rows][puzzle.columns];
+
+		for (int i=1; i<puzzle.rows-1; i++)
+		{
+			for (int j=1; j<puzzle.columns-1; j++)
+			{
+				matriceAdiacenza[i][j] = puzzle.board[i][j];
+				//				System.out.print(matriceAdiacenza[i][j]);
+			}
+			//			System.out.println();
+		}
+		return null;
+
+
+	}
 
 	/**------------------------------------------------------------------------
 	 * Main creates the Jframe for the GUI
