@@ -307,6 +307,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			}
 			else if(blockButtons[i].getText().equals("W")) {
 				blockButtons[i].setBackground(Color.cyan);
+				
 			}
 			else {
 				blockButtons[i].setBackground(Color.yellow);
@@ -314,6 +315,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 			}
 
 			blockPanel.add(blockButtons[i], constraints);
+			System.out.println("Bottone: " + puzzle.blocks.get(i).ID);
 		}
 			
 		// Add the empty boxes - needed to maintain spacing
@@ -371,7 +373,7 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 		}
 
-
+		
 		// Update the GridBagLayout
 		blockPanel.revalidate();
 		blockPanel.repaint();
@@ -441,6 +443,11 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		for (int i=0; i<height; i++)
 		{
 			if(puzzle.board[startrow+i][startcol+width] == 'W') {
+				if(puzzle.board[startrow][startcol] == 'Z') {
+				}
+				else {
+					canMoveRight = false;
+				}
 			}
 			else if (puzzle.board[startrow+i][startcol+width] != '.')
 				canMoveRight = false;
@@ -500,6 +507,12 @@ public class Window extends JFrame implements MouseListener, ActionListener
 		// Check if block can move left
 		for (int i=0; i<height; i++)
 			if(puzzle.board[startrow+i][startcol-1] == 'W') {
+				if(puzzle.board[startrow][startcol] == 'Z') {
+				}
+				else {
+					canMoveLeft = false;
+				}
+				
 			}
 			else if (puzzle.board[startrow+i][startcol-1] != '.')
 				canMoveLeft = false;
@@ -557,10 +570,16 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 		for (int i=0; i<width; i++)
 			if(puzzle.board[startrow-1][startcol+i] == 'W') {
-
+				if(puzzle.board[startrow][startcol] == 'Z') {
+				}
+				else {
+					canMoveUp = false;
+				}
 			}
-			else if (puzzle.board[startrow-1][startcol+i] != '.')
+			else if (puzzle.board[startrow-1][startcol+i] != '.') {
 				canMoveUp = false;
+			}
+			
 
 		if (canMoveUp)
 		{
@@ -613,6 +632,11 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 		for (int i=0; i<width; i++)
 			if(puzzle.board[startrow+height][startcol+i] == 'W') {
+				if(puzzle.board[startrow][startcol] == 'Z') {
+				}
+				else {
+					canMoveDown = false;
+				}
 
 			}
 			else if (puzzle.board[startrow+height][startcol+i] != '.')
@@ -683,17 +707,19 @@ public class Window extends JFrame implements MouseListener, ActionListener
 
 	public void checkIfWon()
 	{
-		for (int i=1; i<puzzle.rows-1; i++)	// Scan rightmost column for goal piece
-		{
-			for (int j=1; j<puzzle.columns-1; j++)	// Scan rightmost column for goal piece
-			{
-				if (puzzle.board[i][j] == 'Z')	// Solution found
+//		for (int i=1; i<puzzle.rows-1; i++)	// Scan rightmost column for goal piece
+//		{
+//			for (int j=1; j<puzzle.columns-1; j++)	// Scan rightmost column for goal piece
+//			{
+				if (puzzle.board[rigaVincita][colonnaVincita] == 'Z')	// Solution found
 				{
-					if(i == rigaVincita && j==colonnaVincita) {
+			
+//					if(i == rigaVincita && j==colonnaVincita) {
+						
 						colonnaVincita =0;
 						rigaVincita=0;
-						System.out.println("RIGA:" + i);
-						System.out.println("Colo:" + j);
+//						System.out.println("RIGA:" + i);
+//						System.out.println("Colo:" + j);
 						// Prompt user to keep playing
 						String output = "Congratulazioni, hai risolto il puzzle!\n\nVuoi Provare il prossimo?";
 						int answer = JOptionPane.showConfirmDialog
@@ -717,12 +743,12 @@ public class Window extends JFrame implements MouseListener, ActionListener
 						}
 
 						return;
-					}
+//					}
 
 
 				}
-			}
-		}
+//			}
+//		}
 	}
 
 
