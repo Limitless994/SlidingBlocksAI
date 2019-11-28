@@ -33,9 +33,9 @@ public class PuzzleCreator extends JFrame
 	protected ArrayList<Block> blocks;					
 	protected int rows;			
 	protected int columns;		
-//	private String percorso = "livelli\\";
+	private String percorso = "livelli\\";
 	
-	private String percorso = "C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\livelli\\";
+//	private String percorso = "C:\\Users\\ricky\\git\\SlidingBlocksAI\\SlidingBlocksAI\\livelli\\";
 	public PuzzleCreator() 
 	{
 		puzzleCounter = 0;
