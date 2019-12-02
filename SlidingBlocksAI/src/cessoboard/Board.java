@@ -35,23 +35,23 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	private final GameWindow g;
 
 	// List of pieces and whether they are movable
-	public final LinkedList<Piece> Bpieces;
-	public final LinkedList<Piece> Wpieces;
+	public final LinkedList<Blocco> Bpieces;
+	public final LinkedList<Blocco> Wpieces;
 	public List<Square> movable;
 
 	private boolean whiteTurn;
 
-	private Piece currPiece;
+	private Blocco currPiece;
 	private int currX;
 	private int currY;
 
-	private CheckmateDetector cmd;
+	private LogicaMosse cmd;
 
 	public Board(GameWindow g) {
 		this.g = g;
 		board = new Square[8][8];
-		Bpieces = new LinkedList<Piece>();
-		Wpieces = new LinkedList<Piece>();
+		Bpieces = new LinkedList<Blocco>();
+		Wpieces = new LinkedList<Blocco>();
 		setLayout(new GridLayout(8, 8, 0, 0));
 
 		this.addMouseListener(this);
@@ -83,8 +83,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 	private void initializePieces() {
 
-			board[6][6].put(new Queen(1, board[6][6], RESOURCES_WPAWN_PNG));
-			cmd = new CheckmateDetector(this, Wpieces, Bpieces);
+			board[6][6].put(new BloccoPiccolo(1, board[6][6], RESOURCES_WPAWN_PNG));
+			board[7][6].put(new BloccoPiccolo(1, board[7][6], RESOURCES_WPAWN_PNG));
+			board[5][6].put(new BloccoPiccolo(1, board[5][6], RESOURCES_WPAWN_PNG));
+			cmd = new LogicaMosse(this, Wpieces, Bpieces);
 	}
 
 	public Square[][] getSquareArray() {
@@ -95,11 +97,11 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 		return whiteTurn;
 	}
 
-	public void setCurrPiece(Piece p) {
+	public void setCurrPiece(Blocco p) {
 		this.currPiece = p;
 	}
 
-	public Piece getCurrPiece() {
+	public Blocco getCurrPiece() {
 		return this.currPiece;
 	}
 

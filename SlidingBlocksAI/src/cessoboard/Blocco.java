@@ -10,12 +10,12 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public abstract class Piece {
+public abstract class Blocco {
     private final int color;
     private Square currentSquare;
     private BufferedImage img;
     
-    public Piece(int color, Square initSq, String img_file) {
+    public Blocco(int color, Square initSq, String img_file) {
         this.color = color;
         this.currentSquare = initSq;
         
@@ -29,7 +29,7 @@ public abstract class Piece {
     }
     
     public boolean move(Square fin) {
-        Piece occup = fin.getOccupyingPiece();
+        Blocco occup = fin.getOccupyingPiece();
         
         if (occup != null) {
             if (occup.getColor() == this.color) return false;

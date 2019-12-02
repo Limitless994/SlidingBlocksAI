@@ -4,9 +4,9 @@ package cessoboard;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Queen extends Piece {
+public class BloccoPiccolo extends Blocco {
 
-    public Queen(int color, Square initSq, String img_file) {
+    public BloccoPiccolo(int color, Square initSq, String img_file) {
         super(color, initSq, img_file);
     }
 

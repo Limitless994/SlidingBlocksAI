@@ -11,7 +11,7 @@ public class Square extends JComponent {
     private Board b;
     
     private final int color;
-    private Piece occupyingPiece;
+    private Blocco occupyingPiece;
     private boolean dispPiece;
     
     private int xNum;
@@ -33,7 +33,7 @@ public class Square extends JComponent {
         return this.color;
     }
     
-    public Piece getOccupyingPiece() {
+    public Blocco getOccupyingPiece() {
         return occupyingPiece;
     }
     
@@ -53,19 +53,19 @@ public class Square extends JComponent {
         this.dispPiece = v;
     }
     
-    public void put(Piece p) {
+    public void put(Blocco p) {
         this.occupyingPiece = p;
         p.setPosition(this);
     }
     
-    public Piece removePiece() {
-        Piece p = this.occupyingPiece;
+    public Blocco removePiece() {
+        Blocco p = this.occupyingPiece;
         this.occupyingPiece = null;
         return p;
     }
     
-    public void capture(Piece p) {
-        Piece k = getOccupyingPiece();
+    public void capture(Blocco p) {
+        Blocco k = getOccupyingPiece();
         if (k.getColor() == 0) b.Bpieces.remove(k);
         if (k.getColor() == 1) b.Wpieces.remove(k);
         this.occupyingPiece = p;

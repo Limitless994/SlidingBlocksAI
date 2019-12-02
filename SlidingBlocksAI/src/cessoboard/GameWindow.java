@@ -13,9 +13,7 @@ import javax.swing.*;
 
 public class GameWindow {
     private JFrame gameWindow;
-    
-    public Clock blackClock;
-    public Clock whiteClock;
+
     
     private Timer timer;
     
@@ -25,9 +23,6 @@ public class GameWindow {
     
     public GameWindow(String blackName, String whiteName, int hh, 
             int mm, int ss) {
-        
-        blackClock = new Clock(hh, ss, mm);
-        whiteClock = new Clock(hh, ss, mm);
         
         gameWindow = new JFrame("Chess");
         
@@ -88,71 +83,8 @@ public class GameWindow {
         
         gameData.add(w);
         gameData.add(b);
-        
-        // CLOCKS
-        
-        final JLabel bTime = new JLabel(blackClock.getTime());
-        final JLabel wTime = new JLabel(whiteClock.getTime());
-        
-        bTime.setHorizontalAlignment(JLabel.CENTER);
-        bTime.setVerticalAlignment(JLabel.CENTER);
-        wTime.setHorizontalAlignment(JLabel.CENTER);
-        wTime.setVerticalAlignment(JLabel.CENTER);
-        
-        if (!(hh == 0 && mm == 0 && ss == 0)) {
-            timer = new Timer(1000, null);
-            timer.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    boolean turn = board.getTurn();
-                    
-                    if (turn) {
-                        whiteClock.decr();
-                        wTime.setText(whiteClock.getTime());
-                        
-                        if (whiteClock.outOfTime()) {
-                            timer.stop();
-                            int n = JOptionPane.showConfirmDialog(
-                                    gameWindow,
-                                    bn + " wins by time! Play a new game? \n" +
-                                    "Choosing \"No\" quits the game.",
-                                    bn + " wins!",
-                                    JOptionPane.YES_NO_OPTION);
-                            
-                            if (n == JOptionPane.YES_OPTION) {
-                                new GameWindow(bn, wn, hh, mm, ss);
-                                gameWindow.dispose();
-                            } else gameWindow.dispose();
-                        }
-                    } else {
-                        blackClock.decr();
-                        bTime.setText(blackClock.getTime());
-                        
-                        if (blackClock.outOfTime()) {
-                            timer.stop();
-                            int n = JOptionPane.showConfirmDialog(
-                                    gameWindow,
-                                    wn + " wins by time! Play a new game? \n" +
-                                    "Choosing \"No\" quits the game.",
-                                    wn + " wins!",
-                                    JOptionPane.YES_NO_OPTION);
-                            
-                            if (n == JOptionPane.YES_OPTION) {
-                                new GameWindow(bn, wn, hh, mm, ss);
-                                gameWindow.dispose();
-                            } else gameWindow.dispose();
-                        }
-                    }
-                }
-            });
-            timer.start();
-        } else {
-            wTime.setText("Untimed game");
-            bTime.setText("Untimed game");
-        }
-        
-        gameData.add(wTime);
-        gameData.add(bTime);
-        
+
+ 
         gameData.setPreferredSize(gameData.getMinimumSize());
         
         return gameData;
