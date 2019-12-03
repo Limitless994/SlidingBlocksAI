@@ -11,12 +11,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public abstract class Blocco {
-    private final int color;
+    private final char ID;
     private Square currentSquare;
     private BufferedImage img;
     
-    public Blocco(int color, Square initSq, String img_file) {
-        this.color = color;
+    public Blocco(char ID, Square initSq, String img_file) {
+        this.ID = ID;
         this.currentSquare = initSq;
         
         try {
@@ -32,8 +32,9 @@ public abstract class Blocco {
         Blocco occup = fin.getOccupyingPiece();
         
         if (occup != null) {
-            if (occup.getColor() == this.color) return false;
-            else fin.capture(this);
+//            if (occup.getColor() == this.color) return false;
+//            else
+        	fin.capture(this);
         }
         
         currentSquare.removePiece();
@@ -50,11 +51,12 @@ public abstract class Blocco {
         this.currentSquare = sq;
     }
     
-    public int getColor() {
-        return color;
-    }
     
-    public Image getImage() {
+    public char getID() {
+		return ID;
+	}
+
+	public Image getImage() {
         return img;
     }
     
@@ -67,39 +69,43 @@ public abstract class Blocco {
     
     public int[] getLinearOccupations(Square[][] board, int x, int y) {
         int lastYabove = 0;
-        int lastXright = 7;
-        int lastYbelow = 7;
+        int lastXright = Board.righeBoard-1;
+        int lastYbelow = Board.colonneBoard-1;
         int lastXleft = 0;
         
         for (int i = 0; i < y; i++) {
             if (board[i][x].isOccupied()) {
-                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
-                    lastYabove = i;
-                } else lastYabove = i + 1;
+//                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
+//                    lastYabove = i;
+//                } else 
+            	lastYabove = i + 1;
             }
         }
 
-        for (int i = 7; i > y; i--) {
+        for (int i = Board.righeBoard-1; i > y; i--) {
             if (board[i][x].isOccupied()) {
-                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
-                    lastYbelow = i;
-                } else lastYbelow = i - 1;
+//                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
+//                    lastYbelow = i;
+//                } else 
+            	lastYbelow = i - 1;
             }
         }
 
         for (int i = 0; i < x; i++) {
             if (board[y][i].isOccupied()) {
-                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
-                    lastXleft = i;
-                } else lastXleft = i + 1;
+//                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
+//                    lastXleft = i;
+//                } else
+            	lastXleft = i + 1;
             }
         }
 
-        for (int i = 7; i > x; i--) {
+        for (int i = Board.colonneBoard-1; i > x; i--) {
             if (board[y][i].isOccupied()) {
-                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
-                    lastXright = i;
-                } else lastXright = i - 1;
+//                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
+//                    lastXright = i;
+//                } else
+            	lastXright = i - 1;
             }
         }
         
@@ -122,12 +128,12 @@ public abstract class Blocco {
         
         while (xNW >= 0 && yNW >= 0) {
             if (board[yNW][xNW].isOccupied()) {
-                if (board[yNW][xNW].getOccupyingPiece().getColor() == this.color) {
-                    break;
-                } else {
+//                if (board[yNW][xNW].getOccupyingPiece().getColor() == this.color) {
+//                    break;
+//                } else {
                     diagOccup.add(board[yNW][xNW]);
                     break;
-                }
+//                }
             } else {
                 diagOccup.add(board[yNW][xNW]);
                 yNW--;
@@ -135,14 +141,14 @@ public abstract class Blocco {
             }
         }
         
-        while (xSW >= 0 && ySW < 8) {
+        while (xSW >= 0 && ySW < Board.colonneBoard) {
             if (board[ySW][xSW].isOccupied()) {
-                if (board[ySW][xSW].getOccupyingPiece().getColor() == this.color) {
-                    break;
-                } else {
+//                if (board[ySW][xSW].getOccupyingPiece().getColor() == this.color) {
+//                    break;
+//                } else {
                     diagOccup.add(board[ySW][xSW]);
-                    break;
-                }
+                   break;
+//                }
             } else {
                 diagOccup.add(board[ySW][xSW]);
                 ySW++;
@@ -150,14 +156,14 @@ public abstract class Blocco {
             }
         }
         
-        while (xSE < 8 && ySE < 8) {
+        while (xSE < Board.righeBoard && ySE < Board.colonneBoard) {
             if (board[ySE][xSE].isOccupied()) {
-                if (board[ySE][xSE].getOccupyingPiece().getColor() == this.color) {
-                    break;
-                } else {
+//                if (board[ySE][xSE].getOccupyingPiece().getColor() == this.color) {
+//                    break;
+//                } else {
                     diagOccup.add(board[ySE][xSE]);
                     break;
-                }
+//                }
             } else {
                 diagOccup.add(board[ySE][xSE]);
                 ySE++;
@@ -165,14 +171,14 @@ public abstract class Blocco {
             }
         }
         
-        while (xNE < 8 && yNE >= 0) {
+        while (xNE < Board.righeBoard && yNE >= 0) {
             if (board[yNE][xNE].isOccupied()) {
-                if (board[yNE][xNE].getOccupyingPiece().getColor() == this.color) {
-                    break;
-                } else {
+//                if (board[yNE][xNE].getOccupyingPiece().getColor() == this.color) {
+//                    break;
+//                } else {
                     diagOccup.add(board[yNE][xNE]);
-                    break;
-                }
+                   break;
+//                }
             } else {
                 diagOccup.add(board[yNE][xNE]);
                 yNE--;

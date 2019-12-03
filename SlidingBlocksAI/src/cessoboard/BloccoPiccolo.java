@@ -6,8 +6,8 @@ import java.util.List;
 
 public class BloccoPiccolo extends Blocco {
 
-    public BloccoPiccolo(int color, Square initSq, String img_file) {
-        super(color, initSq, img_file);
+    public BloccoPiccolo(char ID, Square initSq, String img_file) {
+        super(ID, initSq, img_file);
     }
 
     @Override

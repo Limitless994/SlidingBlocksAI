@@ -20,7 +20,8 @@ public class LogicaMosse {
 	private LinkedList<Square> movableSquares;
 	private final LinkedList<Square> squares;
 	private HashMap<Square,List<Blocco>> wMoves;
-
+    private int righeBoard =Board.righeBoard;
+    private int colonneBoard=Board.colonneBoard;
 
 	/**
 	 * Constructs a new instance of CheckmateDetector on a given board. By
@@ -45,8 +46,8 @@ public class LogicaMosse {
 		Square[][] brd = b.getSquareArray();
 
 		// add all squares to squares list and as hashmap keys
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
+		for (int x = 1; x < righeBoard-1; x++) {
+			for (int y = 1; y < colonneBoard-1; y++) {
 				squares.add(brd[y][x]);
 				wMoves.put(brd[y][x], new LinkedList<Blocco>());
 
@@ -149,8 +150,8 @@ public class LogicaMosse {
 		p.move(sq);
 		update();
 
-		if (p.getColor() == 0 && blackInCheck()) movetest = false;
-		else if (p.getColor() == 1 && whiteInCheck()) movetest = false;
+//		if (p.getColor() == 0 && blackInCheck()) movetest = false;
+//		else if (p.getColor() == 1 && whiteInCheck()) movetest = false;
 
 		p.move(init);
 		if (c != null) sq.put(c);

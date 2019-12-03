@@ -17,23 +17,24 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Board extends JPanel implements MouseListener, MouseMotionListener {
 	// Resource location constants for piece images
-	private static final String RESOURCES_WBISHOP_PNG = "wbishop.png";
-	private static final String RESOURCES_BBISHOP_PNG = "bbishop.png";
-	private static final String RESOURCES_WKNIGHT_PNG = "wknight.png";
-	private static final String RESOURCES_BKNIGHT_PNG = "bknight.png";
-	private static final String RESOURCES_WROOK_PNG = "wrook.png";
-	private static final String RESOURCES_BROOK_PNG = "brook.png";
-	private static final String RESOURCES_WKING_PNG = "wking.png";
-	private static final String RESOURCES_BKING_PNG = "bking.png";
-	private static final String RESOURCES_BQUEEN_PNG = "bqueen.png";
-	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
-	private static final String RESOURCES_WPAWN_PNG = "blocco2.jpg";
+//	private static final String RESOURCES_WBISHOP_PNG = "wbishop.png";
+//	private static final String RESOURCES_BBISHOP_PNG = "bbishop.png";
+//	private static final String RESOURCES_WKNIGHT_PNG = "wknight.png";
+//	private static final String RESOURCES_BKNIGHT_PNG = "bknight.png";
+//	private static final String RESOURCES_WROOK_PNG = "wrook.png";
+//	private static final String RESOURCES_BROOK_PNG = "brook.png";
+//	private static final String RESOURCES_WKING_PNG = "wking.png";
+//	private static final String RESOURCES_BKING_PNG = "bking.png";
+//	private static final String RESOURCES_BQUEEN_PNG = "bqueen.png";
+//	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
+	private static final String RESOURCES_BSMALL_PNG = "blocco2.jpg";
 	private static final String RESOURCES_BPAWN_PNG = "blocco2.jpg";
 
 	// Logical and graphical representations of board
 	private final Square[][] board;
 	private final GameWindow g;
-
+	public static int righeBoard =8;
+	public static int colonneBoard=8;
 	// List of pieces and whether they are movable
 	public final LinkedList<Blocco> Bpieces;
 	public final LinkedList<Blocco> Wpieces;
@@ -49,17 +50,17 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 	public Board(GameWindow g) {
 		this.g = g;
-		board = new Square[8][8];
+		board = new Square[righeBoard][colonneBoard];
 		Bpieces = new LinkedList<Blocco>();
 		Wpieces = new LinkedList<Blocco>();
-		setLayout(new GridLayout(8, 8, 0, 0));
+		setLayout(new GridLayout(righeBoard, colonneBoard, 0, 0));
 
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
-				if(x<=7 && y==7 ||x<=7 && y==0|| x==7 && y<=7||x==0 && y<=7 ) {
+		for (int x = 0; x < righeBoard; x++) {
+			for (int y = 0; y < colonneBoard; y++) {
+				if(x<=righeBoard-1 && y==colonneBoard-1 ||x<=righeBoard-1 && y==0|| x==righeBoard-1 && y<=colonneBoard-1||x==0 && y<=colonneBoard-1 ) {
 					board[x][y] = new Square(this, 1, y, x);
 					this.add(board[x][y]);
 				}else {
@@ -83,10 +84,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 	private void initializePieces() {
 
-			board[6][6].put(new BloccoPiccolo(1, board[6][6], RESOURCES_WPAWN_PNG));
-			board[7][6].put(new BloccoPiccolo(1, board[7][6], RESOURCES_WPAWN_PNG));
-			board[5][6].put(new BloccoPiccolo(1, board[5][6], RESOURCES_WPAWN_PNG));
-			cmd = new LogicaMosse(this, Wpieces, Bpieces);
+		board[2][2].put(new BloccoPiccolo('1', board[2][2], RESOURCES_BSMALL_PNG));
+		board[3][3].put(new BloccoPiccolo('2', board[3][3], RESOURCES_BSMALL_PNG));
+		board[2][4].put(new BloccoPiccolo('3', board[2][4], RESOURCES_BSMALL_PNG));
+		cmd = new LogicaMosse(this, Wpieces, Bpieces);
 	}
 
 	public Square[][] getSquareArray() {
@@ -109,19 +110,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	public void paintComponent(Graphics g) {
 		// super.paintComponent(g);
 
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
+		for (int x = 0; x < righeBoard; x++) {
+			for (int y = 0; y < colonneBoard; y++) {
 				Square sq = board[y][x];
 				sq.paintComponent(g);
 			}
 		}
 
 		if (currPiece != null) {
-			if ((currPiece.getColor() == 1 && whiteTurn)
-					|| (currPiece.getColor() == 0 && !whiteTurn)) {
+//			if ((currPiece.getColor() == 1 && whiteTurn)
+//					|| (currPiece.getColor() == 0 && !whiteTurn)) {
 				final Image i = currPiece.getImage();
 				g.drawImage(i, currX, currY, null);
-			}
+//			}
 		}
 	}
 
@@ -134,10 +135,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 		if (sq.isOccupied()) {
 			currPiece = sq.getOccupyingPiece();
-			if (currPiece.getColor() == 0 && whiteTurn)
-				return;
-			if (currPiece.getColor() == 1 && !whiteTurn)
-				return;
+//			if (currPiece.getColor() == 0 && whiteTurn)
+//				return;
+//			if (currPiece.getColor() == 1 && !whiteTurn)
+//				return;
 			sq.setDisplay(false);
 		}
 		repaint();
@@ -148,10 +149,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 		Square sq = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
 
 		if (currPiece != null) {
-			if (currPiece.getColor() == 0 && whiteTurn)
-				return;
-			if (currPiece.getColor() == 1 && !whiteTurn)
-				return;
+//			if (currPiece.getColor() == 0 && whiteTurn)
+//				return;
+//			if (currPiece.getColor() == 1 && !whiteTurn)
+//				return;
 
 			List<Square> legalMoves = currPiece.getLegalMoves(this);
 			movable = cmd.getAllowableSquares(whiteTurn);
