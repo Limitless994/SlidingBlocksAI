@@ -28,10 +28,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //	private static final String RESOURCES_BQUEEN_PNG = "bqueen.png";
 //	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
 	private static final String RESOURCES_BSMALL_PNG = "blocco2.jpg";
-	private static final String RESOURCES_BPAWN_PNG = "blocco2.jpg";
+	private static final String RESOURCES_BPAWN_PNG = "bloccoGrosso.png";
 
 	// Logical and graphical representations of board
-	private final Square[][] board;
+	public static Square[][] board;
 	private final GameWindow g;
 	public static int righeBoard =8;
 	public static int colonneBoard=8;
@@ -81,12 +81,37 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 		whiteTurn = true;
 
 	}
+	
+	   public void aggiungiBlocco(Blocco p) {
+	    	//caso blocco lungo o quadrato
+	    	if(p.getCurrentSquare()!=p.getFinalSquare()) {
+	    		 board[p.getCurrentSquare().getYNum()][p.getCurrentSquare().getXNum()].setOccupyingPiece(p);
+	    		 board[p.getFinalSquare().getYNum()][p.getFinalSquare().getXNum()].setOccupyingPiece(p);
+	    		 p.setPosition(p.getCurrentSquare());
+	    		 System.out.println("S");
+	    	}
+	    	//caso blocco piccolo
+	    	else {
+	    		 board[p.getCurrentSquare().getYNum()][p.getCurrentSquare().getXNum()].setOccupyingPiece(p);
+	    		 System.out.println("AGGIUNGO BLOCCO IN: " + p.getCurrentSquare().getXNum() + " " + p.getCurrentSquare().getYNum());
+	    	        p.setPosition(p.getCurrentSquare());
+	    	}
+	    	
+	    }
 
 	private void initializePieces() {
 
-		board[2][2].put(new BloccoPiccolo('1', board[2][2], RESOURCES_BSMALL_PNG));
-		board[3][3].put(new BloccoPiccolo('2', board[3][3], RESOURCES_BSMALL_PNG));
-		board[2][4].put(new BloccoPiccolo('3', board[2][4], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[2][1],board[2][1], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[1][1],board[1][1], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[3][4],board[3][4], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoLungo('2', board[5][2],board[5][3], RESOURCES_BPAWN_PNG));
+//		aggiungiBlocco(new BloccoPiccolo('2', board[3][2],board[3][2], RESOURCES_BSMALL_PNG));
+//		aggiungiBlocco(new BloccoPiccolo('3', board[4][4],board[4][4], RESOURCES_BSMALL_PNG));
+//		
+//		board[2][3].put(new BloccoPiccolo('1', board[2][3],board[2][3], RESOURCES_BSMALL_PNG));
+//		board[3][3].put(new BloccoLungo('2', board[3][3],board[3][4], RESOURCES_BSMALL_PNG));
+//		board[2][4].put(new BloccoPiccolo('3', board[2][4],board[2][4], RESOURCES_BSMALL_PNG));
+		
 		cmd = new LogicaMosse(this, Wpieces, Bpieces);
 	}
 

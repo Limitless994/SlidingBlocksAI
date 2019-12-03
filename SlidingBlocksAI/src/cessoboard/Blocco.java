@@ -11,13 +11,15 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public abstract class Blocco {
-    private final char ID;
-    private Square currentSquare;
-    private BufferedImage img;
+	protected final char ID;
+    protected Square currentSquare;
+    protected Square finalSquare;
+    protected BufferedImage img;
     
-    public Blocco(char ID, Square initSq, String img_file) {
+    public Blocco(char ID, Square initSq,Square finalSq, String img_file) {
         this.ID = ID;
         this.currentSquare = initSq;
+        this.finalSquare = finalSq;
         
         try {
             if (this.img == null) {
@@ -28,28 +30,13 @@ public abstract class Blocco {
           }
     }
     
-    public boolean move(Square fin) {
-        Blocco occup = fin.getOccupyingPiece();
-        
-        if (occup != null) {
-//            if (occup.getColor() == this.color) return false;
-//            else
-        	fin.capture(this);
-        }
-        
-        currentSquare.removePiece();
-        this.currentSquare = fin;
-        currentSquare.put(this);
-        return true;
-    }
+    public abstract boolean move(Square fin);
     
     public Square getPosition() {
         return currentSquare;
     }
     
-    public void setPosition(Square sq) {
-        this.currentSquare = sq;
-    }
+    public abstract void setPosition(Square sq);
     
     
     public char getID() {
@@ -59,135 +46,29 @@ public abstract class Blocco {
 	public Image getImage() {
         return img;
     }
+	
     
-    public void draw(Graphics g) {
-        int x = currentSquare.getX();
-        int y = currentSquare.getY();
-        
-        g.drawImage(this.img, x, y, null);
-    }
+    public Square getCurrentSquare() {
+		return currentSquare;
+	}
+
+	public void setCurrentSquare(Square currentSquare) {
+		this.currentSquare = currentSquare;
+	}
+
+	public Square getFinalSquare() {
+		return finalSquare;
+	}
+
+	public void setFinalSquare(Square finalSquare) {
+		this.finalSquare = finalSquare;
+	}
+
+	public abstract void draw(Graphics g);
+	
+    public abstract int[] getLinearOccupations(Square[][] board, int x, int y);
     
-    public int[] getLinearOccupations(Square[][] board, int x, int y) {
-        int lastYabove = 0;
-        int lastXright = Board.righeBoard-1;
-        int lastYbelow = Board.colonneBoard-1;
-        int lastXleft = 0;
-        
-        for (int i = 0; i < y; i++) {
-            if (board[i][x].isOccupied()) {
-//                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
-//                    lastYabove = i;
-//                } else 
-            	lastYabove = i + 1;
-            }
-        }
-
-        for (int i = Board.righeBoard-1; i > y; i--) {
-            if (board[i][x].isOccupied()) {
-//                if (board[i][x].getOccupyingPiece().getColor() != this.color) {
-//                    lastYbelow = i;
-//                } else 
-            	lastYbelow = i - 1;
-            }
-        }
-
-        for (int i = 0; i < x; i++) {
-            if (board[y][i].isOccupied()) {
-//                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
-//                    lastXleft = i;
-//                } else
-            	lastXleft = i + 1;
-            }
-        }
-
-        for (int i = Board.colonneBoard-1; i > x; i--) {
-            if (board[y][i].isOccupied()) {
-//                if (board[y][i].getOccupyingPiece().getColor() != this.color) {
-//                    lastXright = i;
-//                } else
-            	lastXright = i - 1;
-            }
-        }
-        
-        int[] occups = {lastYabove, lastYbelow, lastXleft, lastXright};
-        
-        return occups;
-    }
-    
-    public List<Square> getDiagonalOccupations(Square[][] board, int x, int y) {
-        LinkedList<Square> diagOccup = new LinkedList<Square>();
-        
-        int xNW = x - 1;
-        int xSW = x - 1;
-        int xNE = x + 1;
-        int xSE = x + 1;
-        int yNW = y - 1;
-        int ySW = y + 1;
-        int yNE = y - 1;
-        int ySE = y + 1;
-        
-        while (xNW >= 0 && yNW >= 0) {
-            if (board[yNW][xNW].isOccupied()) {
-//                if (board[yNW][xNW].getOccupyingPiece().getColor() == this.color) {
-//                    break;
-//                } else {
-                    diagOccup.add(board[yNW][xNW]);
-                    break;
-//                }
-            } else {
-                diagOccup.add(board[yNW][xNW]);
-                yNW--;
-                xNW--;
-            }
-        }
-        
-        while (xSW >= 0 && ySW < Board.colonneBoard) {
-            if (board[ySW][xSW].isOccupied()) {
-//                if (board[ySW][xSW].getOccupyingPiece().getColor() == this.color) {
-//                    break;
-//                } else {
-                    diagOccup.add(board[ySW][xSW]);
-                   break;
-//                }
-            } else {
-                diagOccup.add(board[ySW][xSW]);
-                ySW++;
-                xSW--;
-            }
-        }
-        
-        while (xSE < Board.righeBoard && ySE < Board.colonneBoard) {
-            if (board[ySE][xSE].isOccupied()) {
-//                if (board[ySE][xSE].getOccupyingPiece().getColor() == this.color) {
-//                    break;
-//                } else {
-                    diagOccup.add(board[ySE][xSE]);
-                    break;
-//                }
-            } else {
-                diagOccup.add(board[ySE][xSE]);
-                ySE++;
-                xSE++;
-            }
-        }
-        
-        while (xNE < Board.righeBoard && yNE >= 0) {
-            if (board[yNE][xNE].isOccupied()) {
-//                if (board[yNE][xNE].getOccupyingPiece().getColor() == this.color) {
-//                    break;
-//                } else {
-                    diagOccup.add(board[yNE][xNE]);
-                   break;
-//                }
-            } else {
-                diagOccup.add(board[yNE][xNE]);
-                yNE--;
-                xNE++;
-            }
-        }
-        
-        return diagOccup;
-    }
+    public abstract List<Square> getDiagonalOccupations(Square[][] board, int x, int y);
     
     // No implementation, to be implemented by each subclass
     public abstract List<Square> getLegalMoves(Board b);

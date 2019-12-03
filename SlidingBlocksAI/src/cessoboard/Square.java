@@ -53,12 +53,22 @@ public class Square extends JComponent {
         this.dispPiece = v;
     }
     
+//    public void put(Blocco p) {
+//        this.occupyingPiece = p;
+//        p.setPosition(p.getCurrentSquare(),p.getFinalSquare());
+//    }
+    
     public void put(Blocco p) {
         this.occupyingPiece = p;
         p.setPosition(this);
     }
+ 
     
-    public Blocco removePiece() {
+    public void setOccupyingPiece(Blocco p) {
+		this.occupyingPiece = p;
+	}
+
+	public Blocco removePiece() {
         Blocco p = this.occupyingPiece;
         this.occupyingPiece = null;
         return p;
