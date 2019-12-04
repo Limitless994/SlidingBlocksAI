@@ -160,8 +160,9 @@ public class BloccoLungo extends Blocco{
 	}
 
 	@Override
-	public void setPosition(Square sq) {
+	public void setPosition(Square sq, Square fq) {
 		this.currentSquare = sq;
+		this.finalSquare = fq;
 
 	}
 
@@ -169,13 +170,17 @@ public class BloccoLungo extends Blocco{
 	public boolean move(Square fin) {
 		Blocco occup = fin.getOccupyingPiece();
 
-		if (occup != null) {
-			fin.capture(this);
-		}
+//		if (occup != null) {
+//			fin.capture(this);
+//		}
 
 		currentSquare.removePiece();
+		finalSquare.removePiece();
 		this.currentSquare = fin;
+		fin.setxNum(fin.getyNum()+1);
+		this.finalSquare = fin;
 		currentSquare.put(this);
+		finalSquare.put(this);
 		return true;
 	}
 }

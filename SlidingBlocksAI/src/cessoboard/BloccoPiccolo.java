@@ -160,8 +160,9 @@ public class BloccoPiccolo extends Blocco {
 	}
 
 	@Override
-	public void setPosition(Square sq) {
+	public void setPosition(Square sq, Square fq) {
 		this.currentSquare = sq;
+		this.finalSquare = sq;
 
 	}
 

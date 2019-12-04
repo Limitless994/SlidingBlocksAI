@@ -87,20 +87,27 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	    	if(p.getCurrentSquare()!=p.getFinalSquare()) {
 	    		 board[p.getCurrentSquare().getYNum()][p.getCurrentSquare().getXNum()].setOccupyingPiece(p);
 	    		 board[p.getFinalSquare().getYNum()][p.getFinalSquare().getXNum()].setOccupyingPiece(p);
-	    		 p.setPosition(p.getCurrentSquare());
+	    		 System.out.println("BOARD IN: " + p.getCurrentSquare().getYNum() + " e " + p.getCurrentSquare().getXNum() +" occupata");
+	    		 System.out.println("BOARD IN: " + p.getFinalSquare().getYNum() + " e " + p.getFinalSquare().getXNum() + " occupata");
+	    		 p.setPosition(p.getCurrentSquare(), p.getFinalSquare());
 	    		 System.out.println("S");
 	    	}
 	    	//caso blocco piccolo
 	    	else {
 	    		 board[p.getCurrentSquare().getYNum()][p.getCurrentSquare().getXNum()].setOccupyingPiece(p);
 	    		 System.out.println("AGGIUNGO BLOCCO IN: " + p.getCurrentSquare().getXNum() + " " + p.getCurrentSquare().getYNum());
-	    	        p.setPosition(p.getCurrentSquare());
+	    	        p.setPosition(p.getCurrentSquare(), p.getCurrentSquare());
 	    	}
 	    	
 	    }
+	   
+	   public void createWinSquare(Square s) {
+		   s.setColor(3);
+		   cmd.setWinSquare(s);
+	   }
 
 	private void initializePieces() {
-
+		
 		aggiungiBlocco(new BloccoPiccolo('1', board[2][1],board[2][1], RESOURCES_BSMALL_PNG));
 		aggiungiBlocco(new BloccoPiccolo('1', board[1][1],board[1][1], RESOURCES_BSMALL_PNG));
 		aggiungiBlocco(new BloccoPiccolo('1', board[3][4],board[3][4], RESOURCES_BSMALL_PNG));
@@ -113,6 +120,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //		board[2][4].put(new BloccoPiccolo('3', board[2][4],board[2][4], RESOURCES_BSMALL_PNG));
 		
 		cmd = new LogicaMosse(this, Wpieces, Bpieces);
+		createWinSquare(board[0][2]);
 	}
 
 	public Square[][] getSquareArray() {

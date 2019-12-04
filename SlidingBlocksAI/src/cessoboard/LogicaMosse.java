@@ -57,6 +57,12 @@ public class LogicaMosse {
 		// update situation
 		update();
 	}
+	
+	public void setWinSquare(Square q) {
+		squares.add(q);
+		wMoves.put(q, new LinkedList<Blocco>());
+		update();
+	}
 
 	/**
 	 * Updates the object with the current situation of the game.

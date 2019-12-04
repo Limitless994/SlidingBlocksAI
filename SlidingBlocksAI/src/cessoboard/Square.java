@@ -10,7 +10,7 @@ import javax.swing.*;
 public class Square extends JComponent {
     private Board b;
     
-    private final int color;
+    private int color;
     private Blocco occupyingPiece;
     private boolean dispPiece;
     
@@ -49,7 +49,29 @@ public class Square extends JComponent {
         return this.yNum;
     }
     
-    public void setDisplay(boolean v) {
+    
+    
+    public void setColor(int color) {
+		this.color = color;
+	}
+
+	public int getxNum() {
+		return xNum;
+	}
+
+	public void setxNum(int xNum) {
+		this.xNum = xNum;
+	}
+
+	public int getyNum() {
+		return yNum;
+	}
+
+	public void setyNum(int yNum) { 
+		this.yNum = yNum;
+	}
+
+	public void setDisplay(boolean v) {
         this.dispPiece = v;
     }
     
@@ -60,7 +82,7 @@ public class Square extends JComponent {
     
     public void put(Blocco p) {
         this.occupyingPiece = p;
-        p.setPosition(this);
+        p.setPosition(p.getCurrentSquare(),p.getFinalSquare());
     }
  
     
@@ -86,7 +108,11 @@ public class Square extends JComponent {
         
         if (this.color == 1) {
             g.setColor(new Color(221,192,127));
-        } else {
+        }
+        else if(this.color == 3) {
+        	  g.setColor(new Color(100,100,100));
+        }
+        else {
             g.setColor(new Color(101,67,33));
         }
         

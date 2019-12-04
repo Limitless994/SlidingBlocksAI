@@ -36,7 +36,7 @@ public abstract class Blocco {
         return currentSquare;
     }
     
-    public abstract void setPosition(Square sq);
+    public abstract void setPosition(Square sq, Square fq);
     
     
     public char getID() {
