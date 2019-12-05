@@ -32,6 +32,7 @@ public class BloccoPiccolo extends Blocco {
 		List<Square> bMoves = getDiagonalOccupations(board, x, y);
 
 		legalMoves.addAll(bMoves);
+//		for(Square s:bMoves)System.out.println(s.getY()/50+" "+s.getX()/50);
 
 		return legalMoves;
 	}

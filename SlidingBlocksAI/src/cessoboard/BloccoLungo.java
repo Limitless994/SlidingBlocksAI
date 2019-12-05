@@ -32,6 +32,7 @@ public class BloccoLungo extends Blocco{
 		List<Square> bMoves = getDiagonalOccupations(board, x, y);
 
 		legalMoves.addAll(bMoves);
+		for(Square s:bMoves)System.out.println(s.getY()/50+" "+s.getX()/50);
 
 		return legalMoves;
 	}
@@ -52,11 +53,11 @@ public class BloccoLungo extends Blocco{
 		while (xNW >= 0 && yNW >= 0) {
 			if (board[yNW][xNW].isOccupied()) {
 				//                if (board[yNW][xNW].getOccupyingPiece().getColor() == this.color) {
-					//                    break;
-					//                } else {
-						diagOccup.add(board[yNW][xNW]);
-						break;
-						//                }
+				//                    break;
+				//                } else {
+				diagOccup.add(board[yNW][xNW]);
+				break;
+				//                }
 			} else {
 				diagOccup.add(board[yNW][xNW]);
 				yNW--;
@@ -145,7 +146,7 @@ public class BloccoLungo extends Blocco{
 
 		int[] occups = {lastYabove, lastYbelow, lastXleft, lastXright};
 
-//		System.out.println("Sopra: " + lastYabove + " Sotto: " + lastYbelow + "Sinistra " + lastXleft + " Destra " + lastXright);
+		//		System.out.println("Sopra: " + lastYabove + " Sotto: " + lastYbelow + "Sinistra " + lastXleft + " Destra " + lastXright);
 
 		return occups;
 	}
@@ -169,10 +170,6 @@ public class BloccoLungo extends Blocco{
 	@Override
 	public boolean move(Square fin) {
 		Blocco occup = fin.getOccupyingPiece();
-
-//		if (occup != null) {
-//			fin.capture(this);
-//		}
 
 		currentSquare.removePiece();
 		finalSquare.removePiece();
