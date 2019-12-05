@@ -27,8 +27,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //	private static final String RESOURCES_BKING_PNG = "bking.png";
 //	private static final String RESOURCES_BQUEEN_PNG = "bqueen.png";
 //	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
-	private static final String RESOURCES_BSMALL_PNG = "blocco2.jpg";
-	private static final String RESOURCES_BPAWN_PNG = "bloccoGrosso.png";
+	private static final String RESOURCES_BSMALL_PNG = "blocco.jpg";
+	private static final String RESOURCES_BPAWN_PNG = "bloccoG1.jpg";
+	private static final String RESOURCES_BPAWN2_PNG = "bloccoG2.jpg";
 
 	// Logical and graphical representations of board
 	public static Square[][] board;
@@ -106,10 +107,10 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 
 	private void initializePieces() {
 		
-//		aggiungiBlocco(new BloccoPiccolo('1', board[2][1],board[2][1], RESOURCES_BSMALL_PNG));
-//		aggiungiBlocco(new BloccoPiccolo('1', board[1][1],board[1][1], RESOURCES_BSMALL_PNG));
-//		aggiungiBlocco(new BloccoPiccolo('1', board[3][4],board[3][4], RESOURCES_BSMALL_PNG));
-		aggiungiBlocco(new BloccoLungo('2', board[5][2],board[5][3], RESOURCES_BPAWN_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[2][1],board[2][1], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[1][1],board[1][1], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoPiccolo('1', board[3][4],board[3][4], RESOURCES_BSMALL_PNG));
+		aggiungiBlocco(new BloccoLungo('2', board[5][2],board[5][3], RESOURCES_BPAWN_PNG, RESOURCES_BPAWN2_PNG));
 //		aggiungiBlocco(new BloccoPiccolo('2', board[3][2],board[3][2], RESOURCES_BSMALL_PNG));
 //		aggiungiBlocco(new BloccoPiccolo('3', board[4][4],board[4][4], RESOURCES_BSMALL_PNG));
 //		

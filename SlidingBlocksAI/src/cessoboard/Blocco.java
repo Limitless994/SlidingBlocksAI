@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -66,10 +65,42 @@ public abstract class Blocco {
 
 	public abstract void draw(Graphics g);
 	
-    public abstract int[] getLinearOccupations(Square[][] board, int x, int y);
+    public int[] getLinearOccupations(Square[][] board, int x, int y) {
+    	int lastYabove = 0;
+		int lastXright = Board.righeBoard-1;
+		int lastYbelow = Board.colonneBoard-1;
+		int lastXleft = 0;
+
+		for (int i = 0; i < y; i++) {
+			if (board[i][x].isOccupied()) {
+				lastYabove = i + 1;
+			}
+		}
+
+		for (int i = Board.righeBoard-1; i > y; i--) {
+			if (board[i][x].isOccupied()) {
+				lastYbelow = i - 1;
+			}
+		}
+
+		for (int i = 0; i < x; i++) {
+			if (board[y][i].isOccupied()) {
+				lastXleft = i + 1;
+			}
+		}
+
+		for (int i = Board.colonneBoard-1; i > x; i--) {
+			if (board[y][i].isOccupied()) {
+				lastXright = i - 1;
+			}
+		}
+
+		int[] occups = {lastYabove, lastYbelow, lastXleft, lastXright};
+
+
+		return occups;
+    }
     
-    public abstract List<Square> getDiagonalOccupations(Square[][] board, int x, int y);
     
-    // No implementation, to be implemented by each subclass
     public abstract List<Square> getLegalMoves(Board b);
 }
