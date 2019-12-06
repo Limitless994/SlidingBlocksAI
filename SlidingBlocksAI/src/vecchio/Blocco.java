@@ -1,92 +1,75 @@
 package vecchio;
 
+
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public abstract class Blocco {
+	protected final char ID;
+    protected Square currentSquare;
+    protected Square finalSquare;
+    protected BufferedImage img;
+    
+    public Blocco(char ID, Square initSq,Square finalSq, String img_file) {
+        this.ID = ID;
+        this.currentSquare = initSq;
+        this.finalSquare = finalSq;
+        
+        try {
+            if (this.img == null) {
+              this.img = ImageIO.read(getClass().getResource(img_file));
+            }
+          } catch (IOException e) {
+            System.out.println("File not found: " + e.getMessage());
+          }
+    }
+    
+    public abstract boolean move(Square fin);
+    
+    public Square getPosition() {
+        return currentSquare;
+    }
+    
+    public abstract void setPosition(Square sq, Square fq);
+    
+    
+    public char getID() {
+		return ID;
+	}
 
-	protected GameHandler handler;
-	float x,y ;
-	int width;
-	int height;
-
-	protected Rectangle bounds;
+	public Image getImage() {
+        return img;
+    }
 	
-	public Blocco(GameHandler handler, float x, float y) {
-		this.handler= handler;
-		width=32;
-		height=32;
-		this.x=x;
-		this.y=y;
-		bounds = new Rectangle(0, 0, width, height);
+    
+    public Square getCurrentSquare() {
+		return currentSquare;
 	}
+
+	public void setCurrentSquare(Square currentSquare) {
+		this.currentSquare = currentSquare;
+	}
+
+	public Square getFinalSquare() {
+		return finalSquare;
+	}
+
+	public void setFinalSquare(Square finalSquare) {
+		this.finalSquare = finalSquare;
+	}
+
+	public abstract void draw(Graphics g);
 	
-	public abstract void tick();
-	
-	public abstract void render(Graphics g);
-	
-	public boolean checkEntityCollisions(float xOffset, float yOffset){
-		for(Blocco e : handler.getWorld().getBlocchi()){
-			if(e.equals(this))
-				continue;
-			if(e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset)))
-				return true;
-		}
-		return false;
-	}
-	
-	public Rectangle getCollisionBounds(float xOffset, float yOffset){
-		return new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
-	}
-
-	public GameHandler getHandler() {
-		return handler;
-	}
-
-	public void setHandler(GameHandler handler) {
-		this.handler = handler;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setY(float y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public Rectangle getBounds() {
-		return bounds;
-	}
-
-	public void setBounds(Rectangle bounds) {
-		this.bounds = bounds;
-	}
-	
-	
-	
+    public abstract int[] getLinearOccupations(Square[][] board, int x, int y);
+    
+    public abstract List<Square> getDiagonalOccupations(Square[][] board, int x, int y);
+    
+    // No implementation, to be implemented by each subclass
+    public abstract List<Square> getLegalMoves(Board b);
 }

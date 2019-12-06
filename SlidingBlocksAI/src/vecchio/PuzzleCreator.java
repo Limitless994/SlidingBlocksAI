@@ -1,4 +1,4 @@
-package cessoboard;
+package vecchio;
 
 
 import java.io.File;
@@ -27,10 +27,10 @@ public class PuzzleCreator extends JFrame
 	private static final long serialVersionUID = 1L;
 	private ArrayList<String> puzzleFiles;	// List of all pre-loaded puzzles
 	private int puzzleCounter;				// Counter for which puzzle to load
-	private ArrayList<Blocco> resetBlocks;
+	private ArrayList<Block> resetBlocks;
 	private char resetBoard[][];
 	protected char board[][];
-	protected ArrayList<Blocco> blocks;					
+	protected ArrayList<Block> blocks;					
 	protected int rows;			
 	protected int columns;		
 //	private String percorso = "livelli\\";
@@ -40,7 +40,7 @@ public class PuzzleCreator extends JFrame
 	{
 		puzzleCounter = 0;
 		puzzleFiles = new ArrayList<String>();
-		blocks = new ArrayList<Blocco>();
+		blocks = new ArrayList<Block>();
 
 		// Add ten puzzle file names to list
 		for (int i=0; i<10; i++)
@@ -229,14 +229,7 @@ public class PuzzleCreator extends JFrame
 				}
 
 				// Create a new block and add it to the list
-				
-				if(startrow==1 && startcol ==1) {
-					if(direction=='b') {
-//						blocks.add(new BloccoPiccolo(1,));
-					}
-					
-				}
-				
+				blocks.add(new Block(startrow, startcol, width, height, direction, blockID));
 
 			} // End while (fileReader.hasNext()) 
 
@@ -260,11 +253,11 @@ public class PuzzleCreator extends JFrame
 					resetBoard[i][j] = board[i][j]; 
 
 			// Copy over the original data of each block
-			resetBlocks= new ArrayList<Blocco>();
+			resetBlocks= new ArrayList<Block>();
 			for (int i=0; i<blocks.size(); i++)
 			{
-//				Blocco temp = new Blocco(blocks.get(i));
-//				resetBlocks.add(temp);
+				Block temp = new Block(blocks.get(i));
+				resetBlocks.add(temp);
 			}
 
 			// Print out the board
@@ -349,8 +342,8 @@ public class PuzzleCreator extends JFrame
 		blocks.removeAll(blocks);
 		for (int i=0; i<resetBlocks.size(); i++)
 		{
-//			Blocco temp = new Blocco(resetBlocks.get(i));
-//			blocks.add(temp);
+			Block temp = new Block(resetBlocks.get(i));
+			blocks.add(temp);
 		}
 	}
 }

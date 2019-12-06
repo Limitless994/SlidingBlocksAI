@@ -1,4 +1,4 @@
-package cessoboard;
+package vecchio;
 
 
 import java.awt.Color;
