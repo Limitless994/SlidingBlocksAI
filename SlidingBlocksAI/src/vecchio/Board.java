@@ -14,6 +14,9 @@ import java.util.List;
 
 import javax.swing.*;
 
+import vecchio.BloccoLungo;
+import vecchio.LogicaMosse;
+
 @SuppressWarnings("serial")
 public class Board extends JPanel implements MouseListener, MouseMotionListener {
 	// Resource location constants for piece images
@@ -27,8 +30,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //	private static final String RESOURCES_BKING_PNG = "bking.png";
 //	private static final String RESOURCES_BQUEEN_PNG = "bqueen.png";
 //	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
-	private static final String RESOURCES_BSMALL_PNG = "blocco2.jpg";
-	private static final String RESOURCES_BPAWN_PNG = "bloccoGrosso.png";
+	private static final String RESOURCES_BSMALL_PNG = "blocco.jpg";
+	private static final String RESOURCES_BPAWN_PNG = "bloccoG1.jpg";
+	private static final String RESOURCES_BPAWN2_PNG = "bloccoG2.jpg";
 
 	// Logical and graphical representations of board
 	public static Square[][] board;
@@ -36,7 +40,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	public static int righeBoard =8;
 	public static int colonneBoard=8;
 	// List of pieces and whether they are movable
-	public final LinkedList<Blocco> Bpieces;
 	public final LinkedList<Blocco> Wpieces;
 	public List<Square> movable;
 
@@ -51,7 +54,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	public Board(GameWindow g) {
 		this.g = g;
 		board = new Square[righeBoard][colonneBoard];
-		Bpieces = new LinkedList<Blocco>();
 		Wpieces = new LinkedList<Blocco>();
 		setLayout(new GridLayout(righeBoard, colonneBoard, 0, 0));
 
@@ -87,8 +89,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	    	if(p.getCurrentSquare()!=p.getFinalSquare()) {
 	    		 board[p.getCurrentSquare().getYNum()][p.getCurrentSquare().getXNum()].setOccupyingPiece(p);
 	    		 board[p.getFinalSquare().getYNum()][p.getFinalSquare().getXNum()].setOccupyingPiece(p);
-	    		 System.out.println("BOARD IN: " + p.getCurrentSquare().getYNum() + " e " + p.getCurrentSquare().getXNum() +" occupata");
-	    		 System.out.println("BOARD IN: " + p.getFinalSquare().getYNum() + " e " + p.getFinalSquare().getXNum() + " occupata");
+//	    		 System.out.println("BOARD IN: " + p.getCurrentSquare().getYNum() + " e " + p.getCurrentSquare().getXNum() +" occupata");
+//	    		 System.out.println("BOARD IN: " + p.getFinalSquare().getYNum() + " e " + p.getFinalSquare().getXNum() + " occupata");
 	    		 p.setPosition(p.getCurrentSquare(), p.getFinalSquare());
 	    		 System.out.println("S");
 	    	}
@@ -111,7 +113,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 		aggiungiBlocco(new BloccoPiccolo('1', board[2][1],board[2][1], RESOURCES_BSMALL_PNG));
 		aggiungiBlocco(new BloccoPiccolo('1', board[1][1],board[1][1], RESOURCES_BSMALL_PNG));
 		aggiungiBlocco(new BloccoPiccolo('1', board[3][4],board[3][4], RESOURCES_BSMALL_PNG));
-		aggiungiBlocco(new BloccoLungo('2', board[5][2],board[5][3], RESOURCES_BPAWN_PNG));
+		aggiungiBlocco(new BloccoLungo('2', board[5][2],board[5][3], RESOURCES_BPAWN_PNG, RESOURCES_BPAWN2_PNG));
 //		aggiungiBlocco(new BloccoPiccolo('2', board[3][2],board[3][2], RESOURCES_BSMALL_PNG));
 //		aggiungiBlocco(new BloccoPiccolo('3', board[4][4],board[4][4], RESOURCES_BSMALL_PNG));
 //		
@@ -119,7 +121,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //		board[3][3].put(new BloccoLungo('2', board[3][3],board[3][4], RESOURCES_BSMALL_PNG));
 //		board[2][4].put(new BloccoPiccolo('3', board[2][4],board[2][4], RESOURCES_BSMALL_PNG));
 		
-		cmd = new LogicaMosse(this, Wpieces, Bpieces);
+		cmd = new LogicaMosse(this, Wpieces);
 		createWinSquare(board[0][2]);
 	}
 
@@ -167,6 +169,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 		Square sq = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
 
 		if (sq.isOccupied()) {
+			
+				 System.out.println("BOARD IN: " + sq.getY()/50+ " e " + sq.getX()/50 +" occupata");
+				
 			currPiece = sq.getOccupyingPiece();
 //			if (currPiece.getColor() == 0 && whiteTurn)
 //				return;

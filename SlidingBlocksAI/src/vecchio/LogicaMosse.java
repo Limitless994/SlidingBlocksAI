@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 
+
 /**
  * Component of the Chess game that detects check mates in the game.
  * 
@@ -33,8 +34,7 @@ public class LogicaMosse {
 	 * @param wk Piece object representing the white king
 	 * @param bk Piece object representing the black king
 	 */
-	public LogicaMosse(Board b, LinkedList<Blocco> wPieces, 
-			LinkedList<Blocco> bPieces) {
+	public LogicaMosse(Board b, LinkedList<Blocco> wPieces) {
 		this.Pieces = wPieces;
 
 		// Initialize other fields
@@ -68,8 +68,6 @@ public class LogicaMosse {
 	 * Updates the object with the current situation of the game.
 	 */
 	public void update() {
-		// Iterators through pieces
-		Iterator<Blocco> wIter = Pieces.iterator();        
 		// empty moves and movable squares at each update
 		for (List<Blocco> pieces : wMoves.values()) {
 			pieces.removeAll(pieces);
